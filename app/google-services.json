@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "161156512000",
+    "firebase_url": "https://admob-app-id-4534806898.firebaseio.com",
+    "project_id": "admob-app-id-4534806898",
+    "storage_bucket": "admob-app-id-4534806898.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:161156512000:android:e91b44c7f783c120",
+        "android_client_info": {
+          "package_name": "lorenzofeldens.calendarfc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "161156512000-uvsatfvmvhu1cucvalhhum1qappd8l8l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwzHZpU2hst1f1Kfyy7zabkXsUo8H6xJg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

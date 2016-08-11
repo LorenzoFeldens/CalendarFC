@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="@drawable/bg1" android:paddingBottom="@dimen/activity_vertical_margin" android:paddingLeft="@dimen/activity_horizontal_margin" android:paddingRight="@dimen/activity_horizontal_margin"
+  android:paddingTop="@dimen/activity_vertical_margin">
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
+        <ExpandableListView android:id="@id/expandableListView2" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0" />
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="6.0" android:gravity="center" android:orientation="horizontal">
+            <Button android:id="@id/button5" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="5.0dip" android:layout_weight="1.0" android:background="@drawable/buttonshape" android:onClick="ok" android:shadowColor="#ff000000" android:shadowDx="3.0" android:shadowDy="3.0" android:shadowRadius="9.0" android:text="OK" android:textColor="#ffffffff" android:textSize="16.0sp" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Calendar FC</string>
+    <string name="shared_pref_file_key">lorenzofeldens.CalendarFC.PREFERENCE_FILE_KEY</string>
+    <string name="shared_pref_first_use_main">CalendarFC.FirstUseMain</string>
+    <string name="shared_pref_first_use_teams">CalendarFC.FirstUseTeams</string>
+    <string name="shared_pref_first_use_add">CalendarFC.FirstUseAdd</string>
+    <string name="shared_pref_first_use_games">CalendarFC.FirstUseGames</string>
+    <string name="shared_pref_first_use_options">CalendarFC.FirstUseOptions</string>
+    <string name="shared_pref_primary_teams">CalendarFC.PrimaryTeams</string>
+    <string name="shared_pref_secondary_teams">CalendarFC.SecondaryTeams</string>
+    <string name="shared_pref_competitions">CalendarFC.Competitions</string>
+    <string name="shared_pref_notifications">CalendarFC.Notifications</string>
+    <string name="shared_pref_notifications_enabled">CalendarFC.NotificationsEnabled</string>
+    <string name="ads_banner_main">ca-app-pub-8580494290111528/7488273293</string>
+    <string name="ads_app_id">ca-app-pub-8580494290111528~4534806898</string>
+</resources>
