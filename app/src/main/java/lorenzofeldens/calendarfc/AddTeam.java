@@ -1,8 +1,9 @@
 package lorenzofeldens.calendarfc;
 
-
 import android.app.Activity;
-import android.content.SharedPreferences.Editor;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.view.View;
@@ -18,219 +19,188 @@ import entidades.Country;
 import entidades.Team;
 import entidades.Tournament;
 
-public class AddTeam
-        extends Activity
-{
-    private static int prev = -1;
-    ExpandableListView expListView;
-    ExpandableListAdapter listAdapter;
-    ArrayList listChecked;
-    ArrayList<Team> listChecked2;
-    HashMap<String, List<String>> listDataChild;
-    ArrayList<String> listDataHeader;
-    ArrayList paisAtual;
-    ArrayList<Country> paises;
-    int tipo;
+public class AddTeam extends Activity {
+    private ArrayList listSelected;
+    private ArrayList listSelected2;
+    private int listType;
 
-    private void adicionar()
-    {
-        ArrayList localArrayList = ((ExpandableListAdapter)this.expListView.getExpandableListAdapter()).getListAdd2();
-        int j = 0;
-        while (j < localArrayList.size())
-        {
-            int k;
-            if (this.tipo == 2)
-            {
-                this.paisAtual = new GameDAO(this).getCompetitionsCountry(((Country)this.paises.get(j)).getId());
-                k = 0;
-            }
-            for (;;)
-            {
-                if (k >= ((ArrayList)localArrayList.get(j)).size()) {
-                    break label236;
-                }
-                int i = 0;
-                label83:
-                if (i < this.paisAtual.size())
-                {
-                    if (this.tipo == 2) {}
-                    for (String str = ((Tournament)this.paisAtual.get(i)).getNome();; str = ((Team)this.paisAtual.get(i)).getNome())
-                    {
-                        int m = i;
-                        if (((String)((ArrayList)localArrayList.get(j)).get(k)).equalsIgnoreCase(str))
-                        {
-                            this.listChecked.add(this.paisAtual.get(i));
-                            m = this.paisAtual.size();
-                        }
-                        i = m + 1;
-                        break label83;
-                        this.paisAtual = new GameDAO(this).getTeamsCountry(((Country)this.paises.get(j)).getId());
-                        break;
-                    }
-                }
-                k += 1;
-            }
-            label236:
-            j += 1;
-        }
+    private ArrayList<Country> countries;
+    private ArrayList currentCountry;
+
+    private HashMap<String,List<String>> listDataChild;
+    private ArrayList<String> listDataHeader;
+    private ExpandableListView expListView;
+    private static int prevGroup;
+
+    private static final String LIST_TYPE_KEY = "LIST_TYPE";
+    private static final String LIST_SELECTED_KEY = "LIST_SELECTED";
+    private static final String LIST_SELECTED_KEY2 = "LIST_SELECTED2";
+
+    protected void onCreate(Bundle paramBundle) {
+        super.onCreate(paramBundle);
+        setContentView(R.layout.activity_add_team);
+
+        paramBundle = getIntent().getExtras();
+        listType = paramBundle.getInt(LIST_TYPE_KEY);
+        listSelected = ((ArrayList)paramBundle.getSerializable(LIST_SELECTED_KEY));
+        listSelected2 = ((ArrayList)paramBundle.getSerializable(LIST_SELECTED_KEY2));
+
+        setLayout();
+        fillExpandableList();
     }
 
-    private void fillExpandableList()
-    {
-        this.paises = new GameDAO(this).getCountries();
-        this.expListView = ((ExpandableListView)findViewById(2131492952));
-        this.listDataHeader = new ArrayList();
-        this.listDataChild = new HashMap();
-        int i = 0;
-        if (i < this.paises.size())
-        {
-            if (this.tipo == 2) {}
-            for (this.paisAtual = new GameDAO(this).getCompetitionsCountry(((Country)this.paises.get(i)).getId());; this.paisAtual = new GameDAO(this).getTeamsCountry(((Country)this.paises.get(i)).getId()))
-            {
-                removeDuplicated();
-                setList(this.paisAtual, ((Country)this.paises.get(i)).getNome());
-                i += 1;
-                break;
-            }
+    private void setLayout() {
+        if (VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(Color.BLACK);
         }
-        this.listAdapter = new ExpandableListAdapter(this, this.listDataHeader, this.listDataChild, 0);
-        this.listAdapter.setCondicao(2);
-        this.expListView.setAdapter(this.listAdapter);
-        this.expListView.setOnGroupExpandListener(new OnGroupExpandListener()
-        {
-            public void onGroupExpand(int paramAnonymousInt)
-            {
-                if ((AddTeam.prev != -1) && (paramAnonymousInt != AddTeam.prev)) {
-                    AddTeam.this.expListView.collapseGroup(AddTeam.prev);
+
+        prevGroup = -1;
+
+        expListView = ((ExpandableListView)findViewById(R.id.expandableListView_AddTeam));
+    }
+
+    private void fillExpandableList() {
+        countries = new GameDAO(this).getCountries();
+
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
+
+        for(int i = 0; i< countries.size(); i++){
+            if(listType == 2){
+                currentCountry = new GameDAO(this).getCompetitionsCountry(countries.get(i).getId());
+            }else{
+                currentCountry = new GameDAO(this).getTeamsCountry(countries.get(i).getId());
+            }
+            removeSelected();
+            setGroup(countries.get(i).getNome());
+        }
+
+        ExpandableListAdapter listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild, 0);
+        listAdapter.setCondicao(2);
+        expListView.setAdapter(listAdapter);
+        expListView.setOnGroupExpandListener(new OnGroupExpandListener() {
+            public void onGroupExpand(int group) {
+                if (prevGroup != -1 && group != prevGroup) {
+                    expListView.collapseGroup(prevGroup);
                 }
-                AddTeam.access$002(paramAnonymousInt);
+                prevGroup = group;
             }
         });
     }
 
-    private void removeDuplicated()
-    {
-        int k = 0;
-        int i;
-        while (k < this.listChecked.size())
-        {
-            i = 0;
-            if (i < this.paisAtual.size())
-            {
-                if (this.tipo == 2)
-                {
-                    j = i;
-                    if (((Tournament)this.listChecked.get(k)).getNome().equalsIgnoreCase(((Tournament)this.paisAtual.get(i)).getNome()))
-                    {
-                        this.paisAtual.remove(i);
-                        j = this.paisAtual.size() + 1;
-                    }
-                }
-                for (;;)
-                {
-                    i = j + 1;
-                    break;
-                    j = i;
-                    if (((Team)this.listChecked.get(k)).getNome().equalsIgnoreCase(((Team)this.paisAtual.get(i)).getNome()))
-                    {
-                        this.paisAtual.remove(i);
-                        j = this.paisAtual.size() + 1;
-                    }
-                }
-            }
-            k += 1;
+    private void removeSelected() {
+        ArrayList list = listSelected;
+
+        if(listType != 2){
+            list.addAll(listSelected2);
         }
-        int j = 0;
-        while (j < this.listChecked2.size())
-        {
-            for (i = 0; i < this.paisAtual.size(); i = k + 1)
-            {
-                k = i;
-                if (((Team)this.listChecked2.get(j)).getNome().equalsIgnoreCase(((Team)this.paisAtual.get(i)).getNome()))
-                {
-                    this.paisAtual.remove(i);
-                    k = this.paisAtual.size() + 1;
+
+        for(int i=0; i<list.size(); i++){
+            for(int j = 0; j< currentCountry.size(); j++){
+                String nameChecked;
+                String nameCurrent;
+
+                if(listType == 2){
+                    nameChecked = ((Tournament) list.get(i)).getNome();
+                    nameCurrent = ((Tournament) currentCountry.get(j)).getNome();
+                }else{
+                    nameChecked = ((Team) list.get(i)).getNome();
+                    nameCurrent = ((Team) currentCountry.get(j)).getNome();
+                }
+
+                if(nameChecked.equalsIgnoreCase(nameCurrent)){
+                    currentCountry.remove(j);
+                    j = currentCountry.size()+1;
                 }
             }
-            j += 1;
         }
     }
 
-    private void savePreferences()
-    {
+    private void setGroup(String group) {
+        listDataHeader.add(group);
+
+        ArrayList<String> list = new ArrayList<>();
+
+        for(int i = 0; i< currentCountry.size(); i++){
+            if(listType == 2)
+                list.add(((Tournament) currentCountry.get(i)).getNome());
+            else
+                list.add(((Team) currentCountry.get(i)).getNome());
+        }
+
+        if (list.size() == 0) {
+            list.add("Nenhum item disponível");
+        }
+
+        listDataChild.put(group, list);
+    }
+
+    private void insert() {
+        ArrayList<ArrayList<String>> list = ((ExpandableListAdapter)this.expListView.getExpandableListAdapter()).getListAdd2();
+
+        for(int i=0; i<list.size(); i++){
+            if(listType == 2)
+                currentCountry = new GameDAO(this).getCompetitionsCountry(countries.get(i).getId());
+            else
+                currentCountry = new GameDAO(this).getTeamsCountry(countries.get(i).getId());
+
+            for(int j=0; j<list.get(i).size(); j++){
+                for(int k = 0; k< currentCountry.size(); k++){
+                    String nameCurrent;
+
+                    if(listType == 2){
+                        nameCurrent = ((Tournament) currentCountry.get(k)).getNome();
+                    }else{
+                        nameCurrent = ((Team) currentCountry.get(k)).getNome();
+                    }
+
+                    if(list.get(i).get(j).equalsIgnoreCase(nameCurrent)){
+                        listSelected.add(currentCountry.get(k));
+                        k = currentCountry.size();
+                    }
+                }
+            }
+        }
+    }
+
+    private void savePreferences() {
         String str = "";
-        int i = 0;
-        if (i < this.listChecked.size())
-        {
-            localObject = str;
-            if (!str.equalsIgnoreCase("")) {
-                localObject = str + ", ";
+
+        for(int i = 0; i< listSelected.size(); i++){
+            if(!str.equalsIgnoreCase(""))
+                str += ", ";
+
+            if(listType == 2){
+                str += ((Tournament) listSelected.get(i)).getId();
+            }else{
+                str += ((Team) listSelected.get(i)).getId();
             }
-            if (this.tipo == 2) {}
-            for (str = (String)localObject + ((Tournament)this.listChecked.get(i)).getId();; str = (String)localObject + ((Team)this.listChecked.get(i)).getId())
-            {
-                i += 1;
+        }
+
+
+        SharedPreferences sharedPref = this.getSharedPreferences(
+                getString(R.string.shared_pref_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        switch (listType){
+            case 0:
+                editor.putString(getString(R.string.shared_pref_primary_teams),str);
                 break;
-            }
+            case 1:
+                editor.putString(getString(R.string.shared_pref_secondary_teams),str);
+                break;
+            case 2:
+                editor.putString(getString(R.string.shared_pref_competitions),str);
+                break;
         }
-        Object localObject = getSharedPreferences(getString(2131099705), 0).edit();
-        switch (this.tipo)
-        {
-        }
-        for (;;)
-        {
-            ((Editor)localObject).commit();
-            new Scheduling(this).setNotifications();
-            return;
-            ((Editor)localObject).putString("Times Principais", str);
-            continue;
-            ((Editor)localObject).putString("Times Secundarios", str);
-            continue;
-            ((Editor)localObject).putString("Competicoes", str);
-        }
+
+        editor.apply();
     }
 
-    private void setList(ArrayList paramArrayList, String paramString)
-    {
-        this.listDataHeader.add(paramString);
-        ArrayList localArrayList = new ArrayList();
-        int i = 0;
-        if (i < paramArrayList.size())
-        {
-            if (this.tipo == 2) {
-                localArrayList.add(((Tournament)paramArrayList.get(i)).getNome());
-            }
-            for (;;)
-            {
-                i += 1;
-                break;
-                localArrayList.add(((Team)paramArrayList.get(i)).getNome());
-            }
-        }
-        if (paramArrayList.size() == 0) {
-            localArrayList.add("Nenhum item selecionado");
-        }
-        this.listDataChild.put(paramString, localArrayList);
-    }
-
-    public void ok(View paramView)
-    {
-        adicionar();
+    public void ok(View view) {
+        insert();
         savePreferences();
         super.onBackPressed();
     }
 
-    protected void onCreate(Bundle paramBundle)
-    {
-        super.onCreate(paramBundle);
-        setContentView(2130968601);
-        if (VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(-16777216);
-        }
-        paramBundle = getIntent().getExtras();
-        this.tipo = paramBundle.getInt("TIPO");
-        this.listChecked = ((ArrayList)paramBundle.getSerializable("LIST"));
-        this.listChecked2 = ((ArrayList)paramBundle.getSerializable("LIST2"));
-        fillExpandableList();
-    }
 }

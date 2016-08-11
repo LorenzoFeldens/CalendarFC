@@ -24,31 +24,33 @@ public class MainActivity extends Activity {
         super.onCreate(paramBundle);
         setContentView(R.layout.activity_main);
 
-        setAds();
         setLayout();
         setNotifications();
-        verifyFirstUse();
-        verifyUpdate();
     }
 
-    private void setAds(){
+    private void setAds() {
         MobileAds.initialize(getApplicationContext(), getString(R.string.ads_app_id));
         ((AdView)findViewById(R.id.adView_banner_main)).loadAd(new AdRequest.Builder().build());
     }
 
     private void setLayout() {
+        setAds();
+
         if (VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(Color.BLACK);
         }
+
+        verifyFirstUse();
+        verifyUpdate();
     }
 
-    private void setNotifications(){
+    private void setNotifications() {
         Scheduling scheduling = new Scheduling(this);
         scheduling.removeNotifications();
         scheduling.setNotifications();
     }
 
-    private void verifyFirstUse(){
+    private void verifyFirstUse() {
         SharedPreferences sharedPref = getSharedPreferences(
                 getString(R.string.shared_pref_file_key), Context.MODE_PRIVATE);
 
@@ -69,7 +71,7 @@ public class MainActivity extends Activity {
         startActivity(new Intent(this, Update.class));
     }
 
-    private void showTutorial(){
+    private void showTutorial() {
         //WAITING IMPLEMENTATION
     }
 
