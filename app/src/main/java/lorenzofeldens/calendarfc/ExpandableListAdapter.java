@@ -4,7 +4,6 @@ package lorenzofeldens.calendarfc;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
@@ -14,234 +13,177 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ExpandableListAdapter
-        extends BaseExpandableListAdapter
-{
-    private Context _context;
-    private HashMap<String, List<String>> _listDataChild;
-    private List<String> _listDataHeader;
-    private int condicao;
-    private ArrayList<ArrayList<String>> listAdd2;
-    private int tipo;
+public class ExpandableListAdapter extends BaseExpandableListAdapter {
+    private Context context;
+    private HashMap<String, List<String>> listDataChild;
+    private List<String> listDataHeader;
 
-    public ExpandableListAdapter(Context paramContext, List<String> paramList, HashMap<String, List<String>> paramHashMap, int paramInt)
-    {
-        this._context = paramContext;
-        this._listDataHeader = paramList;
-        this._listDataChild = paramHashMap;
-        this.condicao = 0;
-        this.tipo = paramInt;
-        this.listAdd2 = new ArrayList();
-        paramInt = 0;
-        while (paramInt < paramList.size())
-        {
-            this.listAdd2.add(new ArrayList());
-            paramInt += 1;
+    private int condition;
+    private ArrayList<ArrayList<String>> listChecked;
+    private int type;
+
+    public ExpandableListAdapter(Context context, List<String> listDataHeader, HashMap<String,
+            List<String>> listDataChild, int type) {
+        this.context = context;
+        this.listDataHeader = listDataHeader;
+        this.listDataChild = listDataChild;
+        this.condition = 0;
+        this.type = type;
+
+        listChecked = new ArrayList<>();
+        for(int i=0; i<listDataHeader.size(); i++){
+            listChecked.add(new ArrayList<String>());
         }
     }
 
-    private void setCheckBoxInvisible(CheckBox paramCheckBox)
-    {
-        paramCheckBox.setVisibility(4);
-        paramCheckBox.setEnabled(false);
-        paramCheckBox.setClickable(false);
-        paramCheckBox.setOnClickListener(null);
-        paramCheckBox.setHint("");
+    @Override
+    public Object getChild(int groupPosition, int childPosititon) {
+        return listDataChild.get(listDataHeader.get(groupPosition))
+                .get(childPosititon);
     }
 
-    private void setCheckBoxVisible(final CheckBox paramCheckBox, final int paramInt1, final String paramString, final int paramInt2)
-    {
-        paramCheckBox.setVisibility(0);
-        paramCheckBox.setEnabled(true);
-        paramCheckBox.setClickable(true);
-        paramCheckBox.setHint(String.valueOf(paramInt1));
-        paramCheckBox.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View paramAnonymousView)
-            {
-                if (paramCheckBox.isChecked())
-                {
-                    if (paramInt2 == 0)
-                    {
-                        ((ArrayList)ExpandableListAdapter.this.listAdd2.get(paramInt1)).remove(paramString);
-                        return;
-                    }
-                    ((ArrayList)ExpandableListAdapter.this.listAdd2.get(paramInt1)).add(paramString);
-                    return;
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return childPosition;
+    }
+
+    @Override
+    public View getChildView(int groupPosition, int childPosition,
+                             boolean isLastChild, View convertView, ViewGroup parent) {
+
+        final String childText = (String) getChild(groupPosition, childPosition);
+
+        if (convertView == null) {
+            LayoutInflater layoutInflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            if (type == 0) {
+                convertView = layoutInflater.inflate(R.layout.list_item_team, null);
+            }else{
+                convertView = layoutInflater.inflate(R.layout.list_item_game, null);
+            }
+        }
+
+        if(type == 0){
+            TextView textView = (TextView) convertView.findViewById(R.id.textView_list_item_team);
+            textView.setText(childText);
+
+            CheckBox checkBox_MyTeams = (CheckBox) convertView.findViewById(R.id.checkBox_MyTeams);
+            CheckBox checkBox_AddTeam = (CheckBox) convertView.findViewById(R.id.checkBox_AddTeam);
+
+            if(condition == 0){
+                setCheckBoxInvisible(checkBox_MyTeams);
+                setCheckBoxInvisible(checkBox_AddTeam);
+            }else{
+                if(condition == 1){
+                    setCheckBoxVisible(checkBox_MyTeams,groupPosition,childText);
+                    setCheckBoxInvisible(checkBox_AddTeam);
+                }else{
+                    setCheckBoxInvisible(checkBox_MyTeams);
+                    setCheckBoxVisible(checkBox_AddTeam,groupPosition,childText);
                 }
-                if (paramInt2 == 0)
-                {
-                    ((ArrayList)ExpandableListAdapter.this.listAdd2.get(paramInt1)).add(paramString);
-                    return;
+            }
+        }else{
+            String[] content = childText.split("#");
+            String[] title = content[0].split(" - ");
+            String[] date = content[1].split(" ");
+
+            TextView textView_teams = (TextView) convertView
+                    .findViewById(R.id.textView_list_item_game_teams);
+            TextView textView_tournament = (TextView) convertView
+                    .findViewById(R.id.textView_list_item_game_tournament);
+            TextView textView_date = (TextView) convertView
+                    .findViewById(R.id.textView_list_item_game_date);
+
+            textView_teams.setText(title[0]);
+            textView_tournament.setText(title[1]);
+            textView_date.setText(date[1]);
+        }
+
+        return convertView;
+    }
+
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        return listDataChild.get(listDataHeader.get(groupPosition)).size();
+    }
+
+    @Override
+    public Object getGroup(int groupPosition) {
+        return this.listDataHeader.get(groupPosition);
+    }
+
+    @Override
+    public int getGroupCount() {
+        return this.listDataHeader.size();
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded,
+                             View convertView, ViewGroup parent) {
+        String headerTitle = (String) getGroup(groupPosition);
+        if (convertView == null) {
+            LayoutInflater layoutInflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = layoutInflater.inflate(R.layout.list_group, null);
+        }
+
+        TextView lblListHeader = (TextView) convertView.findViewById(R.id.textView_list_group);
+        lblListHeader.setText(headerTitle);
+
+        if(type == 0 && condition == 1){
+            ImageButton plus = (ImageButton) convertView.findViewById(R.id.imageButton_plus_list_group);
+            plus.setVisibility(View.VISIBLE);
+            plus.setClickable(true);
+            plus.setFocusable(false);
+        }
+
+        return convertView;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+
+    private void setCheckBoxInvisible(CheckBox checkBox) {
+        checkBox.setVisibility(View.INVISIBLE);
+        checkBox.setEnabled(false);
+        checkBox.setClickable(false);
+        checkBox.setOnClickListener(null);
+    }
+
+    private void setCheckBoxVisible(final CheckBox checkBox, final int group, final String textCheckBox) {
+        checkBox.setVisibility(View.VISIBLE);
+        checkBox.setEnabled(true);
+        checkBox.setClickable(true);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View paramAnonymousView) {
+                if (checkBox.isChecked()) {
+                    listChecked.get(group).add(textCheckBox);
+                }else{
+                    listChecked.get(group).remove(textCheckBox);
                 }
-                ((ArrayList)ExpandableListAdapter.this.listAdd2.get(paramInt1)).remove(paramString);
             }
         });
     }
 
-    public Object getChild(int paramInt1, int paramInt2)
-    {
-        return ((List)this._listDataChild.get(this._listDataHeader.get(paramInt1))).get(paramInt2);
+    public void setCondition(int paramInt) {
+        this.condition = paramInt;
     }
 
-    public long getChildId(int paramInt1, int paramInt2)
-    {
-        return paramInt2;
-    }
-
-    public View getChildView(int paramInt1, int paramInt2, boolean paramBoolean, View paramView, ViewGroup paramViewGroup)
-    {
-        Object localObject1 = (String)getChild(paramInt1, paramInt2);
-        paramViewGroup = paramView;
-        int j;
-        if (paramView == null)
-        {
-            paramView = (LayoutInflater)this._context.getSystemService("layout_inflater");
-            if (this.tipo == 0) {
-                paramViewGroup = paramView.inflate(2130968610, null);
-            }
-        }
-        else
-        {
-            paramView = (TextView)paramViewGroup.findViewById(2131492973);
-            if (this.tipo != 0) {
-                break label338;
-            }
-            paramView.setText((CharSequence)localObject1);
-            paramView = (CheckBox)paramViewGroup.findViewById(2131492974);
-            localObject2 = (CheckBox)paramViewGroup.findViewById(2131492975);
-            j = 0;
-            paramInt2 = 0;
-        }
-        for (;;)
-        {
-            if (paramInt2 >= this.listAdd2.size()) {
-                break label198;
-            }
-            int i = 0;
-            for (;;)
-            {
-                if (i < ((ArrayList)this.listAdd2.get(paramInt2)).size())
-                {
-                    if (((String)localObject1).equalsIgnoreCase((String)((ArrayList)this.listAdd2.get(paramInt2)).get(i))) {
-                        j = 1;
-                    }
-                    i += 1;
-                    continue;
-                    paramViewGroup = paramView.inflate(2130968611, null);
-                    break;
-                }
-            }
-            paramInt2 += 1;
-        }
-        label198:
-        if ((this.condicao == 0) || (((String)localObject1).equalsIgnoreCase("Nenhum item selecionado")) || (((String)localObject1).equalsIgnoreCase("Nenhum item dispon��vel")))
-        {
-            setCheckBoxInvisible(paramView);
-            setCheckBoxInvisible((CheckBox)localObject2);
-        }
-        for (;;)
-        {
-            paramView.setFocusable(false);
-            ((CheckBox)localObject2).setFocusable(false);
-            return paramViewGroup;
-            if (this.condicao == 1)
-            {
-                setCheckBoxInvisible((CheckBox)localObject2);
-                setCheckBoxVisible(paramView, paramInt1, (String)localObject1, 0);
-                if (j != 0) {
-                    paramView.setChecked(false);
-                } else {
-                    paramView.setChecked(true);
-                }
-            }
-            else
-            {
-                setCheckBoxVisible((CheckBox)localObject2, paramInt1, (String)localObject1, 1);
-                setCheckBoxInvisible(paramView);
-                if (j != 0) {
-                    ((CheckBox)localObject2).setChecked(true);
-                } else {
-                    ((CheckBox)localObject2).setChecked(false);
-                }
-            }
-        }
-        label338:
-        localObject1 = ((String)localObject1).split("#");
-        Object localObject2 = localObject1[0].split(" - ");
-        paramView.setText(localObject2[0]);
-        ((TextView)paramViewGroup.findViewById(2131492976)).setText(localObject2[1]);
-        paramView = localObject1[1].split(" ");
-        ((TextView)paramViewGroup.findViewById(2131492977)).setText(paramView[1]);
-        return paramViewGroup;
-    }
-
-    public int getChildrenCount(int paramInt)
-    {
-        return ((List)this._listDataChild.get(this._listDataHeader.get(paramInt))).size();
-    }
-
-    public Object getGroup(int paramInt)
-    {
-        return this._listDataHeader.get(paramInt);
-    }
-
-    public int getGroupCount()
-    {
-        return this._listDataHeader.size();
-    }
-
-    public long getGroupId(int paramInt)
-    {
-        return paramInt;
-    }
-
-    public View getGroupView(int paramInt, boolean paramBoolean, View paramView, ViewGroup paramViewGroup)
-    {
-        String str = (String)getGroup(paramInt);
-        paramViewGroup = paramView;
-        if (paramView == null)
-        {
-            paramView = (LayoutInflater)this._context.getSystemService("layout_inflater");
-            if (this.tipo != 0) {
-                break label113;
-            }
-        }
-        label113:
-        for (paramViewGroup = paramView.inflate(2130968608, null);; paramViewGroup = paramView.inflate(2130968609, null))
-        {
-            paramView = (TextView)paramViewGroup.findViewById(2131492971);
-            paramView.setTypeface(null, 1);
-            paramView.setText(str);
-            if ((this.tipo == 0) && (this.condicao == 1))
-            {
-                paramView = (ImageButton)paramViewGroup.findViewById(2131492972);
-                paramView.setVisibility(0);
-                paramView.setClickable(true);
-                paramView.setFocusable(false);
-            }
-            return paramViewGroup;
-        }
-    }
-
-    public ArrayList<ArrayList<String>> getListAdd2()
-    {
-        return this.listAdd2;
-    }
-
-    public boolean hasStableIds()
-    {
-        return false;
-    }
-
-    public boolean isChildSelectable(int paramInt1, int paramInt2)
-    {
-        return true;
-    }
-
-    public void setCondicao(int paramInt)
-    {
-        this.condicao = paramInt;
+    public ArrayList<ArrayList<String>> getListChecked() {
+        return this.listChecked;
     }
 }
 

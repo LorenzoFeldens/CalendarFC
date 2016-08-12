@@ -13,4 +13,10 @@
     <string name="shared_pref_notifications_enabled">CalendarFC.NotificationsEnabled</string>
     <string name="ads_banner_main">ca-app-pub-8580494290111528/7488273293</string>
     <string name="ads_app_id">ca-app-pub-8580494290111528~4534806898</string>
+    <string name="descriptions_app_logo">App Logo</string>
+    <string name="button_AddTeam_text">OK</string>
+    <string name="button_my_teams_text">Meus Times</string>
+    <string name="button_next_games_text">Próximos Jogos</string>
+    <string name="button_options_text">Opções</string>
+    <string name="description_add_icon">Add Icon</string>
 </resources>

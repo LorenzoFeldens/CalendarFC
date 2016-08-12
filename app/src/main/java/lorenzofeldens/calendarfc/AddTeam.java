@@ -76,7 +76,7 @@ public class AddTeam extends Activity {
         }
 
         ExpandableListAdapter listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild, 0);
-        listAdapter.setCondicao(2);
+        listAdapter.setCondition(2);
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupExpandListener(new OnGroupExpandListener() {
             public void onGroupExpand(int group) {
@@ -136,7 +136,7 @@ public class AddTeam extends Activity {
     }
 
     private void insert() {
-        ArrayList<ArrayList<String>> list = ((ExpandableListAdapter)this.expListView.getExpandableListAdapter()).getListAdd2();
+        ArrayList<ArrayList<String>> list = ((ExpandableListAdapter)this.expListView.getExpandableListAdapter()).getListChecked();
 
         for(int i=0; i<list.size(); i++){
             if(listType == 2)

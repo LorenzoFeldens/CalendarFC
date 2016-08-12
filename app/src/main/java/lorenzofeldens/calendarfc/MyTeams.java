@@ -47,7 +47,7 @@ public class MyTeams
         setList(this.competicoes, "Competi����es");
         this.listAdapter = new ExpandableListAdapter(this, this.listDataHeader, this.listDataChild, 0);
         if (this.condicao == 1) {
-            this.listAdapter.setCondicao(this.condicao);
+            this.listAdapter.setCondition(this.condicao);
         }
         this.expListView.setAdapter(this.listAdapter);
         this.expListView.setOnGroupExpandListener(new OnGroupExpandListener()
@@ -105,7 +105,7 @@ public class MyTeams
 
     private void remover()
     {
-        ArrayList localArrayList = ((ExpandableListAdapter)this.expListView.getExpandableListAdapter()).getListAdd2();
+        ArrayList localArrayList = ((ExpandableListAdapter)this.expListView.getExpandableListAdapter()).getListChecked();
         int i = 0;
         while (i < ((ArrayList)localArrayList.get(0)).size())
         {
