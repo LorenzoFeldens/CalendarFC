@@ -21,12 +21,12 @@ import java.util.List;
 
 import dao.GameDAO;
 import entidades.Team;
-import entidades.Tournament;
+import entidades.Competition;
 
 public class MyTeams
         extends Activity
 {
-    ArrayList<Tournament> competicoes;
+    ArrayList<Competition> competicoes;
     int condicao;
     ExpandableListView expListView;
     ExpandableListAdapter listAdapter;
@@ -94,7 +94,7 @@ public class MyTeams
                 }
             }
             label48:
-            for (String str = ((Tournament)paramArrayList.get(i)).getNome(); str.equalsIgnoreCase(paramString); str = ((Team)paramArrayList.get(i)).getNome())
+            for (String str = ((Competition)paramArrayList.get(i)).getNome(); str.equalsIgnoreCase(paramString); str = ((Team)paramArrayList.get(i)).getNome())
             {
                 paramArrayList.remove(i);
                 return;
@@ -158,7 +158,7 @@ public class MyTeams
             if (!str3.equalsIgnoreCase("")) {
                 localObject = str3 + ", ";
             }
-            str3 = (String)localObject + ((Tournament)this.competicoes.get(i)).getId();
+            str3 = (String)localObject + ((Competition)this.competicoes.get(i)).getId();
             i += 1;
         }
         Object localObject = getSharedPreferences(getString(2131099705), 0).edit();
@@ -177,7 +177,7 @@ public class MyTeams
         if (i < paramArrayList.size())
         {
             if (paramString.equalsIgnoreCase("Competi����es")) {
-                localArrayList.add(((Tournament)paramArrayList.get(i)).getNome());
+                localArrayList.add(((Competition)paramArrayList.get(i)).getNome());
             }
             for (;;)
             {

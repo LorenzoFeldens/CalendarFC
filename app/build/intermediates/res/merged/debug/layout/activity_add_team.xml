@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <ExpandableListView
-            android:id="@+id/expandableListView2"
+            android:id="@+id/expandableListView_AddTeam"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1.0" />
@@ -27,18 +27,18 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button5"
-                android:layout_width="fill_parent"
+                android:id="@+id/button_AddTeam"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="5.0dip"
                 android:layout_weight="1.0"
-                android:background="@drawable/buttonshape"
+                android:background="@drawable/button_shape"
                 android:onClick="ok"
                 android:shadowColor="#ff000000"
                 android:shadowDx="3.0"
                 android:shadowDy="3.0"
                 android:shadowRadius="9.0"
-                android:text="OK"
+                android:text="@string/button_AddTeam_text"
                 android:textColor="#ffffffff"
                 android:textSize="16.0sp" />
 

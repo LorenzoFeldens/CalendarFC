@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/home/lorenzo/AndroidStudioProjects/CalendarFC/app/build/intermediates/res/merged/debug/values-hdpi-v4/values-hdpi-v4.xml",
+        "outputFile": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\res\\merged\\debug\\values-hdpi-v4\\values-hdpi-v4.xml",
         "map": [
             {
                 "to": {
@@ -12,7 +12,33 @@
                     "endOffset": 327
                 },
                 "from": {
-                    "file": "/home/lorenzo/AndroidStudioProjects/CalendarFC/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.1.1/res/values-hdpi-v4/values-hdpi-v4.xml",
+                    "file": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.1.1\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endLine": 6,
+                        "endColumn": 13,
+                        "endOffset": 327
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "C:\\home\\lorenzo\\AndroidStudioProjects\\CalendarFC\\app\\build\\intermediates\\res\\merged\\debug\\values-hdpi-v4\\values-hdpi-v4.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endLine": 6,
+                    "endColumn": 13,
+                    "endOffset": 327
+                },
+                "from": {
+                    "file": "C:\\home\\lorenzo\\AndroidStudioProjects\\CalendarFC\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.1.1\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,

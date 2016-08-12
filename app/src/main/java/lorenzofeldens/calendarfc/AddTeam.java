@@ -16,16 +16,15 @@ import java.util.List;
 
 import dao.GameDAO;
 import entidades.Country;
-import entidades.Team;
-import entidades.Tournament;
+import entidades.Item;
 
 public class AddTeam extends Activity {
-    private ArrayList listSelected;
-    private ArrayList listSelected2;
+    private ArrayList<Item> listSelected;
+    private ArrayList<Item> listSelected2;
     private int listType;
 
     private ArrayList<Country> countries;
-    private ArrayList currentCountry;
+    private ArrayList<Item> currentCountry;
 
     private HashMap<String,List<String>> listDataChild;
     private ArrayList<String> listDataHeader;
@@ -36,17 +35,41 @@ public class AddTeam extends Activity {
     private static final String LIST_SELECTED_KEY = "LIST_SELECTED";
     private static final String LIST_SELECTED_KEY2 = "LIST_SELECTED2";
 
+    private static final String EMPTY_GROUP_TEXT = "Nenhum item disponível";
+
     protected void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
         setContentView(R.layout.activity_add_team);
 
         paramBundle = getIntent().getExtras();
         listType = paramBundle.getInt(LIST_TYPE_KEY);
-        listSelected = ((ArrayList)paramBundle.getSerializable(LIST_SELECTED_KEY));
-        listSelected2 = ((ArrayList)paramBundle.getSerializable(LIST_SELECTED_KEY2));
+
+        Object list1 = paramBundle.getSerializable(LIST_SELECTED_KEY);
+        Object list2 = paramBundle.getSerializable(LIST_SELECTED_KEY2);
+
+        listSelected = verifySerializable(list1);
+        listSelected2 = verifySerializable(list2);
 
         setLayout();
         fillExpandableList();
+    }
+
+    private ArrayList<Item> verifySerializable(Object object){
+        ArrayList<Item> ret = new ArrayList<>();
+
+        if(object instanceof ArrayList){
+            for(int i=0; i<((ArrayList) object).size(); i++){
+                if(((ArrayList) object).get(i) instanceof Item){
+                    ret.add((Item)((ArrayList) object).get(i));
+                }else{
+                    return new ArrayList<>();
+                }
+            }
+        }else{
+            return new ArrayList<>();
+        }
+
+        return ret;
     }
 
     private void setLayout() {
@@ -71,6 +94,7 @@ public class AddTeam extends Activity {
             }else{
                 currentCountry = new GameDAO(this).getTeamsCountry(countries.get(i).getId());
             }
+
             removeSelected();
             setGroup(countries.get(i).getNome());
         }
@@ -89,24 +113,17 @@ public class AddTeam extends Activity {
     }
 
     private void removeSelected() {
-        ArrayList list = listSelected;
+        ArrayList<Item> list = listSelected;
 
-        if(listType != 2){
-            list.addAll(listSelected2);
-        }
+        list.addAll(listSelected2);
 
         for(int i=0; i<list.size(); i++){
             for(int j = 0; j< currentCountry.size(); j++){
                 String nameChecked;
                 String nameCurrent;
 
-                if(listType == 2){
-                    nameChecked = ((Tournament) list.get(i)).getNome();
-                    nameCurrent = ((Tournament) currentCountry.get(j)).getNome();
-                }else{
-                    nameChecked = ((Team) list.get(i)).getNome();
-                    nameCurrent = ((Team) currentCountry.get(j)).getNome();
-                }
+                nameChecked = list.get(i).getName();
+                nameCurrent = currentCountry.get(j).getName();
 
                 if(nameChecked.equalsIgnoreCase(nameCurrent)){
                     currentCountry.remove(j);
@@ -122,14 +139,11 @@ public class AddTeam extends Activity {
         ArrayList<String> list = new ArrayList<>();
 
         for(int i = 0; i< currentCountry.size(); i++){
-            if(listType == 2)
-                list.add(((Tournament) currentCountry.get(i)).getNome());
-            else
-                list.add(((Team) currentCountry.get(i)).getNome());
+            list.add(currentCountry.get(i).getName());
         }
 
         if (list.size() == 0) {
-            list.add("Nenhum item disponível");
+            list.add(EMPTY_GROUP_TEXT);
         }
 
         listDataChild.put(group, list);
@@ -148,11 +162,7 @@ public class AddTeam extends Activity {
                 for(int k = 0; k< currentCountry.size(); k++){
                     String nameCurrent;
 
-                    if(listType == 2){
-                        nameCurrent = ((Tournament) currentCountry.get(k)).getNome();
-                    }else{
-                        nameCurrent = ((Team) currentCountry.get(k)).getNome();
-                    }
+                    nameCurrent = currentCountry.get(k).getName();
 
                     if(list.get(i).get(j).equalsIgnoreCase(nameCurrent)){
                         listSelected.add(currentCountry.get(k));
@@ -170,11 +180,7 @@ public class AddTeam extends Activity {
             if(!str.equalsIgnoreCase(""))
                 str += ", ";
 
-            if(listType == 2){
-                str += ((Tournament) listSelected.get(i)).getId();
-            }else{
-                str += ((Team) listSelected.get(i)).getId();
-            }
+            str += listSelected.get(i).getId();
         }
 
 

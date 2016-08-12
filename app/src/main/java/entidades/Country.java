@@ -6,7 +6,7 @@ public class Country
     int id;
     String nome;
 
-    public Country(String paramString, int paramInt)
+    public Country(int paramInt, String paramString)
     {
         this.nome = paramString;
         this.id = paramInt;

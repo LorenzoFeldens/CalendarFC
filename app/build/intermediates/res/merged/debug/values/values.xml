@@ -253,6 +253,10 @@
     <string name="ads_app_id">ca-app-pub-8580494290111528~4534806898</string>
     <string name="ads_banner_main">ca-app-pub-8580494290111528/7488273293</string>
     <string name="app_name">Calendar FC</string>
+    <string name="button_AddTeam_text">OK</string>
+    <string name="button_my_teams_text">Meus Times</string>
+    <string name="button_next_games_text">Próximos Jogos</string>
+    <string name="button_options_text">Opções</string>
     <string msgid="2523291102206661146" name="common_google_play_services_enable_button">Enable</string>
     <string msgid="227660514972886228" name="common_google_play_services_enable_text"><ns1:g id="app_name">%1$s</ns1:g> won\'t work unless you enable Google Play services.</string>
     <string msgid="5122002158466380389" name="common_google_play_services_enable_title">Enable Google Play services</string>
@@ -277,6 +281,8 @@
     <string name="create_calendar_title">Create calendar event</string>
     <string name="decline">Decline</string>
     <string name="default_web_client_id" translatable="false">161156512000-uvsatfvmvhu1cucvalhhum1qappd8l8l.apps.googleusercontent.com</string>
+    <string name="description_add_icon">Add Icon</string>
+    <string name="descriptions_app_logo">App Logo</string>
     <string name="firebase_database_url" translatable="false">https://admob-app-id-4534806898.firebaseio.com</string>
     <string name="gcm_defaultSenderId" translatable="false">161156512000</string>
     <string name="google_api_key" translatable="false">AIzaSyBwzHZpU2hst1f1Kfyy7zabkXsUo8H6xJg</string>

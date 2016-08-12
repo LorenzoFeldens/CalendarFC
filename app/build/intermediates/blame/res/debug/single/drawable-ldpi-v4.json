@@ -1,6 +1,10 @@
 [
     {
-        "merged": "/home/lorenzo/AndroidStudioProjects/CalendarFC/app/build/intermediates/res/merged/debug/drawable-ldpi-v4/common_ic_googleplayservices.png",
-        "source": "/home/lorenzo/AndroidStudioProjects/CalendarFC/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.4.0/res/drawable-ldpi-v4/common_ic_googleplayservices.png"
+        "merged": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\common_ic_googleplayservices.png",
+        "source": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.4.0\\res\\drawable-ldpi-v4\\common_ic_googleplayservices.png"
+    },
+    {
+        "merged": "C:\\home\\lorenzo\\AndroidStudioProjects\\CalendarFC\\app\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\common_ic_googleplayservices.png",
+        "source": "C:\\home\\lorenzo\\AndroidStudioProjects\\CalendarFC\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.4.0\\res\\drawable-ldpi-v4\\common_ic_googleplayservices.png"
     }
 ]
