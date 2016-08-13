@@ -21,9 +21,9 @@ import dao.GameDAO;
 import entidades.Game;
 
 public class MyGames extends Activity {
-    private ArrayList<Game> before;
-    private ArrayList<Game> now;
-    private ArrayList<Game> after;
+    private ArrayList<Game> gamesBefore;
+    private ArrayList<Game> gamesNow;
+    private ArrayList<Game> gamesAfter;
 
     private HashMap<String, List<String>> listDataChild;
     private ArrayList<String> listDataHeader;
@@ -78,9 +78,9 @@ public class MyGames extends Activity {
         String competitions = sharedPreferences.getString(getString(
                 R.string.shared_pref_competitions), DEFAULT_COMPETITIONS);
 
-        before = new GameDAO(this).getGamesBefore(primaryTeams, secondaryTeams, competitions);
-        now = new GameDAO(this).getGamesNow(primaryTeams, secondaryTeams, competitions);
-        after = new GameDAO(this).getGamesAfter(primaryTeams, secondaryTeams, competitions);
+        gamesBefore = new GameDAO(this).getGamesBefore(primaryTeams, secondaryTeams, competitions);
+        gamesNow = new GameDAO(this).getGamesNow(primaryTeams, secondaryTeams, competitions);
+        gamesAfter = new GameDAO(this).getGamesAfter(primaryTeams, secondaryTeams, competitions);
     }
 
     private void fillExpandableList() {
@@ -90,9 +90,9 @@ public class MyGames extends Activity {
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
 
-        setList(before, GAMES_BEFORE_GROUP_NAME);
-        setList(now, GAMES_NOW_GROUP_NAME);
-        setList(after, GAMES_AFTER_GROUP_NAME);
+        setList(gamesBefore, GAMES_BEFORE_GROUP_NAME);
+        setList(gamesNow, GAMES_NOW_GROUP_NAME);
+        setList(gamesAfter, GAMES_AFTER_GROUP_NAME);
 
         ExpandableListAdapter expandableListAdapter = new ExpandableListAdapter(this,
                 listDataHeader, listDataChild, EXPANDABLE_LIST_ADAPTER_TYPE);

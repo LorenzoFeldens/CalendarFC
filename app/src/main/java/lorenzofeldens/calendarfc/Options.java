@@ -1,6 +1,5 @@
 package lorenzofeldens.calendarfc;
 
-
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
@@ -23,9 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-public class Preferences
-        extends Activity
-{
+public class Options extends Activity {
     Button button;
     Button button2;
     CheckBox checkBox;
@@ -51,7 +48,7 @@ public class Preferences
         {
             public void onTimeSet(TimePicker paramAnonymousTimePicker, int paramAnonymousInt1, int paramAnonymousInt2)
             {
-                Preferences.this.addNotification(paramAnonymousInt1, paramAnonymousInt2);
+                Options.this.addNotification(paramAnonymousInt1, paramAnonymousInt2);
             }
         }, 0, 0, true).show();
     }
@@ -176,8 +173,8 @@ public class Preferences
                 {
                     public void onClick(View paramAnonymousView)
                     {
-                        Preferences.this.notifications.remove(i);
-                        Preferences.this.preenche();
+                        Options.this.notifications.remove(i);
+                        Options.this.preenche();
                     }
                 });
             }
@@ -191,7 +188,7 @@ public class Preferences
                 public boolean onTouch(View paramAnonymousView, MotionEvent paramAnonymousMotionEvent)
                 {
                     if (paramAnonymousMotionEvent.getActionMasked() == 0) {
-                        Preferences.this.geraAlert();
+                        Options.this.geraAlert();
                     }
                     return false;
                 }
@@ -231,20 +228,20 @@ public class Preferences
         {
             public void onClick(View paramAnonymousView)
             {
-                Preferences.this.condicao = 0;
+                Options.this.condicao = 0;
                 paramAnonymousView = new LinearLayout.LayoutParams(-1, -2, 1.0F);
                 paramAnonymousView.setMargins(5, 5, 5, 5);
-                Preferences.this.button.setLayoutParams(paramAnonymousView);
-                Preferences.this.button.setText("REMOVER");
-                Preferences.this.button.setOnClickListener(new OnClickListener()
+                Options.this.button.setLayoutParams(paramAnonymousView);
+                Options.this.button.setText("REMOVER");
+                Options.this.button.setOnClickListener(new OnClickListener()
                 {
                     public void onClick(View paramAnonymous2View)
                     {
-                        Preferences.this.remover();
+                        Options.this.remover();
                     }
                 });
-                Preferences.this.preenche();
-                Preferences.this.ok();
+                Options.this.preenche();
+                Options.this.ok();
             }
         });
     }
@@ -276,14 +273,14 @@ public class Preferences
         {
             public void onClick(View paramAnonymousView)
             {
-                if (Preferences.this.checkBox.isChecked())
+                if (Options.this.checkBox.isChecked())
                 {
-                    Preferences.this.setEnabledTrue();
-                    Preferences.this.preenche();
+                    Options.this.setEnabledTrue();
+                    Options.this.preenche();
                     return;
                 }
-                Preferences.this.setEnabledFalse();
-                Preferences.this.preenche();
+                Options.this.setEnabledFalse();
+                Options.this.preenche();
             }
         });
         this.notifications = new ArrayList();
@@ -298,7 +295,7 @@ public class Preferences
         {
             public void onClick(View paramAnonymousView)
             {
-                Preferences.this.geraAlert();
+                Options.this.geraAlert();
             }
         });
         paramView = new LinearLayout.LayoutParams(-1, -2);
@@ -311,16 +308,16 @@ public class Preferences
             {
                 paramAnonymousView = new LinearLayout.LayoutParams(-1, -2, 1.0F);
                 paramAnonymousView.setMargins(5, 5, 5, 5);
-                Preferences.this.button.setLayoutParams(paramAnonymousView);
-                Preferences.this.button.setText("REMOVER");
-                Preferences.this.button.setOnClickListener(new OnClickListener()
+                Options.this.button.setLayoutParams(paramAnonymousView);
+                Options.this.button.setText("REMOVER");
+                Options.this.button.setOnClickListener(new OnClickListener()
                 {
                     public void onClick(View paramAnonymous2View)
                     {
-                        Preferences.this.remover();
+                        Options.this.remover();
                     }
                 });
-                Preferences.this.ok();
+                Options.this.ok();
             }
         });
         preenche();

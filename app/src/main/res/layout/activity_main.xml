@@ -46,7 +46,7 @@
                     android:orientation="vertical">
 
                     <Button
-                        android:id="@+id/button_my_teams"
+                        android:id="@+id/button_Main_my_teams"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="15.0dip"
@@ -64,7 +64,7 @@
                         android:textSize="24.0dip" />
 
                     <Button
-                        android:id="@+id/button_next_games"
+                        android:id="@+id/button_Main_next_games"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="15.0dip"
@@ -82,7 +82,7 @@
                         android:textSize="24.0dip" />
 
                     <Button
-                        android:id="@+id/button_options"
+                        android:id="@+id/button_Main_options"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="15.0dip"

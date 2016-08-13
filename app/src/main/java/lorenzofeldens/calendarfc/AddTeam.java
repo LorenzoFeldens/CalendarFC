@@ -124,17 +124,15 @@ public class AddTeam extends Activity {
         list.addAll(listSelected2);
 
         for(int i=0; i<list.size(); i++){
-            for(int j = 0; j< currentCountry.size(); j++){
-                String nameChecked;
-                String nameCurrent;
+            removeFromCurrentCountry(list.get(i).getName());
+        }
+    }
 
-                nameChecked = list.get(i).getName();
-                nameCurrent = currentCountry.get(j).getName();
-
-                if(nameChecked.equalsIgnoreCase(nameCurrent)){
-                    currentCountry.remove(j);
-                    j = currentCountry.size()+1;
-                }
+    private void removeFromCurrentCountry(String name){
+        for(int i = 0; i< currentCountry.size(); i++){
+            if(currentCountry.get(i).getName().equalsIgnoreCase(name)){
+                currentCountry.remove(i);
+                return;
             }
         }
     }
@@ -165,17 +163,25 @@ public class AddTeam extends Activity {
             else
                 currentCountry = new TeamDAO(this).getFromCountry(countries.get(i).getId());
 
-            for(int j=0; j<list.get(i).size(); j++){
-                for(int k = 0; k< currentCountry.size(); k++){
-                    String nameCurrent;
+            insertArray(list.get(i));
+        }
+    }
 
-                    nameCurrent = currentCountry.get(k).getName();
+    private void insertArray (ArrayList<String> list){
+        for(int i=0; i<list.size(); i++){
+            insertItem(list.get(i));
+        }
+    }
 
-                    if(list.get(i).get(j).equalsIgnoreCase(nameCurrent)){
-                        listSelected.add(currentCountry.get(k));
-                        k = currentCountry.size();
-                    }
-                }
+    private void insertItem (String name){
+        for(int i=0; i<currentCountry.size(); i++){
+            String nameCurrent;
+
+            nameCurrent = currentCountry.get(i).getName();
+
+            if(name.equalsIgnoreCase(nameCurrent)){
+                listSelected.add(currentCountry.get(i));
+                return;
             }
         }
     }

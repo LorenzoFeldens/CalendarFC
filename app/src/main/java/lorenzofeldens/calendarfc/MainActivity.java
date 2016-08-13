@@ -104,6 +104,6 @@ public class MainActivity extends Activity {
     }
 
     public void options(View view) {
-        startActivity(new Intent(this, Preferences.class));
+        startActivity(new Intent(this, Options.class));
     }
 }
