@@ -24,10 +24,14 @@ public class GameDAO {
         adapter.executeQuery(query);
     }
 
-    public ArrayList<Competition> getCompetitionById(String idCompetitions) {
-        ArrayList list = new ArrayList();
-
+    public ArrayList<Item> getCompetitionById(String idCompetitions) {
         String query = "SELECT id, name FROM Competition WHERE id IN ("+idCompetitions+") ORDER BY name";
+
+        return getArrayCompetitionFromQuery(query);
+    }
+
+    private ArrayList<Item> getArrayCompetitionFromQuery(String query){
+        ArrayList list = new ArrayList();
 
         Cursor cursor = adapter.executeQuery(query);
 
@@ -41,20 +45,10 @@ public class GameDAO {
     }
 
     public ArrayList<Item> getCompetitionsCountry(int idCountry) {
-        ArrayList list = new ArrayList();
-
         String query = "SELECT id, name FROM Competition WHERE country = "+idCountry
                 +" ORDER BY name";
 
-        Cursor cursor = adapter.executeQuery(query);
-
-        while (!cursor.isAfterLast()) {
-            list.add(new Competition(cursor.getInt(cursor.getColumnIndex("id")),
-                    cursor.getString(cursor.getColumnIndex("name"))));
-            cursor.moveToNext();
-        }
-
-        return list;
+        return getArrayCompetitionFromQuery(query);
     }
 
     public ArrayList<Country> getCountries() {
@@ -86,23 +80,25 @@ public class GameDAO {
         return (ArrayList<Game>)localObject;
     }*/
 
-    public ArrayList<Game> getGamesAgora(String idPrimaryTeams,
+    public ArrayList<Game> getGamesNow(String idPrimaryTeams,
                                          String idSecondaryTeams, String idCompetitions) {
-        ArrayList list = new ArrayList();
-
         Date date = new Date();
-        Date now = new Date();
+        SimpleDateFormat full = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String end = full.format(date);
 
         date.setTime(date.getTime() - TimeUnit.HOURS.toMillis(2));
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String begin = simpleDateFormat.format(date);
-        String end = simpleDateFormat.format(now);
+        String begin = full.format(date);
 
         String query = "SELECT title, date FROM Game WHERE date >= '"+begin+"' AND date < '"+end
                 +"' AND (" + "(t_home IN (" +idPrimaryTeams+ ") OR t_away IN ("+idPrimaryTeams
                 +")) OR (t_away IN ("+idSecondaryTeams+") AND t_home IN ("+idSecondaryTeams+")) OR "
                 + "competition IN ("+idCompetitions+")) ORDER BY date";
+
+        return getArrayGameFromQuery(query);
+    }
+
+    private ArrayList<Game> getArrayGameFromQuery(String query){
+        ArrayList list = new ArrayList();
 
         Cursor cursor = adapter.executeQuery(query);
 
@@ -114,54 +110,46 @@ public class GameDAO {
         return list;
     }
 
-    public ArrayList<Game> getGamesAntes(String paramString1, String paramString2, String paramString3) {
-        ArrayList localArrayList = new ArrayList();
-        Object localObject1 = new SimpleDateFormat("HH");
-        Object localObject2 = new Date();
-        if (Integer.valueOf(((SimpleDateFormat)localObject1).format((Date)localObject2)).intValue() < 2) {}
-        for (;;)
-        {
-            return localArrayList;
-            localObject1 = new Date();
-            ((Date)localObject1).setTime(((Date)localObject1).getTime() - TimeUnit.HOURS.toMillis(2L));
-            SimpleDateFormat localSimpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
-            SimpleDateFormat localSimpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            localObject2 = localSimpleDateFormat2.format((Date)localObject2);
-            localObject2 = (String)localObject2 + " 00:00";
-            localObject1 = localSimpleDateFormat1.format((Date)localObject1);
-            paramString1 = "SELECT titulo, date FROM Game WHERE date >= '" + (String)localObject2 + "' AND date < '" + (String)localObject1 + "' AND (" + "(t_home IN (" + paramString1 + ") OR t_away IN (" + paramString1 + ")) OR (t_away IN (" + paramString2 + ") AND t_home IN (" + paramString2 + ")) OR " + "competition IN (" + paramString3 + ")) ORDER BY date";
-            paramString1 = this.adapter.executeQuery(paramString1);
-            while (!paramString1.isAfterLast())
-            {
-                localArrayList.add(new Game(paramString1.getString(paramString1.getColumnIndex("titulo")), paramString1.getString(paramString1.getColumnIndex("date"))));
-                paramString1.moveToNext();
-            }
-        }
+    public ArrayList<Game> getGamesBefore(String idPrimaryTeams,
+                                         String idSecondaryTeams, String idCompetitions) {
+        Date date = new Date();
+
+        SimpleDateFormat day = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat full = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        String begin = day.format(today);
+        begin+=" 00:00";
+
+        date.setTime(date.getTime() - TimeUnit.HOURS.toMillis(2));
+        String end = full.format(date);
+
+        String query = "SELECT title, date FROM Game WHERE date >= '"+begin+"' AND date < '"+end
+                +"' AND (" + "(t_home IN (" +idPrimaryTeams+ ") OR t_away IN ("+idPrimaryTeams
+                +")) OR (t_away IN ("+idSecondaryTeams+") AND t_home IN ("+idSecondaryTeams+")) OR "
+                + "competition IN ("+idCompetitions+")) ORDER BY date";
+
+        return getArrayGameFromQuery(query);
     }
 
-    public ArrayList<Game> getGamesDepois(String paramString1, String paramString2, String paramString3)
-    {
-        ArrayList localArrayList = new ArrayList();
-        Object localObject2 = new Date();
-        Object localObject1 = new Date();
-        ((Date)localObject1).setTime(((Date)localObject1).getTime() + TimeUnit.DAYS.toMillis(1L));
-        SimpleDateFormat localSimpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        SimpleDateFormat localSimpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-        localObject2 = localSimpleDateFormat2.format((Date)localObject2);
-        localObject1 = localSimpleDateFormat1.format((Date)localObject1);
-        localObject1 = (String)localObject1 + " 00:00";
-        paramString1 = "SELECT titulo, date FROM Game WHERE date >= '" + (String)localObject2 + "' AND date < '" + (String)localObject1 + "' AND (" + "(t_home IN (" + paramString1 + ") OR t_away IN (" + paramString1 + ")) OR (t_away IN (" + paramString2 + ") AND t_home IN (" + paramString2 + ")) OR " + "competition IN (" + paramString3 + ")) ORDER BY date";
-        paramString1 = this.adapter.executeQuery(paramString1);
-        while (!paramString1.isAfterLast())
-        {
-            localArrayList.add(new Game(paramString1.getString(paramString1.getColumnIndex("titulo")), paramString1.getString(paramString1.getColumnIndex("date"))));
-            paramString1.moveToNext();
-        }
-        return localArrayList;
+    public ArrayList<Game> getGamesAfter(String idPrimaryTeams,
+                                          String idSecondaryTeams, String idCompetitions) {
+        Date date = new Date();
+        SimpleDateFormat day = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat full = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        String begin = full.format(date);
+        String end = day.format(date);
+        end+=" 00:00";
+
+        String query = "SELECT title, date FROM Game WHERE date >= '"+begin+"' AND date < '"+end
+                +"' AND (" + "(t_home IN (" +idPrimaryTeams+ ") OR t_away IN ("+idPrimaryTeams
+                +")) OR (t_away IN ("+idSecondaryTeams+") AND t_home IN ("+idSecondaryTeams+")) OR "
+                + "competition IN ("+idCompetitions+")) ORDER BY date";
+
+        return getArrayGameFromQuery(query);
     }
 
-    public String getNextNotificationGames(String paramString1, String paramString2, String paramString3, Date paramDate)
-    {
+    public String getNextNotificationGames(String paramString1, String paramString2, String paramString3, Date paramDate) {
         Object localObject = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         new Date();
         localObject = ((SimpleDateFormat)localObject).format(paramDate);
