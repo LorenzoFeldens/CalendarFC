@@ -1,24 +1,25 @@
 package entidades;
 
 
-public class Country
-{
-    int id;
-    String nome;
+public class Country {
+    private int id;
+    private String name;
 
-    public Country(int paramInt, String paramString)
-    {
-        this.nome = paramString;
-        this.id = paramInt;
+    public Country() {}
+
+    public int getId() {
+        return id;
     }
 
-    public int getId()
-    {
-        return this.id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getNome()
-    {
-        return this.nome;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

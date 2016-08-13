@@ -1,23 +1,24 @@
 package entidades;
 
-public class Game
-{
-    String data;
-    String titulo;
+public class Game {
+    String date;
+    String title;
 
-    public Game(String paramString1, String paramString2)
-    {
-        this.titulo = paramString1;
-        this.data = paramString2;
+    public Game() {}
+
+    public String getDate() {
+        return date;
     }
 
-    public String getData()
-    {
-        return this.data;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getTitulo()
-    {
-        return this.titulo;
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

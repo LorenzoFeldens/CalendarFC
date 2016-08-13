@@ -19,14 +19,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import dao.CompetitionDAO;
 import dao.GameDAO;
+import dao.TeamDAO;
+import entidades.Item;
 import entidades.Team;
 import entidades.Competition;
 
 public class MyTeams
         extends Activity
 {
-    ArrayList<Competition> competicoes;
+    ArrayList<Item> competicoes;
     int condicao;
     ExpandableListView expListView;
     ExpandableListAdapter listAdapter;
@@ -34,8 +37,8 @@ public class MyTeams
     ArrayList<String> listDataHeader;
     ArrayList<Boolean> listGroups;
     ArrayList<String> listRemove;
-    ArrayList<Team> timesPrincipais;
-    ArrayList<Team> timesSecundarios;
+    ArrayList<Item> timesPrincipais;
+    ArrayList<Item> timesSecundarios;
 
     private void fillExpandableList()
     {
@@ -78,9 +81,9 @@ public class MyTeams
     {
         SharedPreferences localSharedPreferences = getSharedPreferences(getString(2131099705), 0);
         GameDAO localGameDAO = new GameDAO(this);
-        this.timesPrincipais = localGameDAO.getTeamsById(localSharedPreferences.getString("Times Principais", ""));
+        this.timesPrincipais = new TeamDAO(this).getTeamsById(localSharedPreferences.getString("Times Principais", ""));
         this.timesSecundarios = localGameDAO.getTeamsById(localSharedPreferences.getString("Times Secundarios", ""));
-        this.competicoes = localGameDAO.getCompetitionById(localSharedPreferences.getString("Competicoes", ""));
+        this.competicoes = new CompetitionDAO(this).getById(localSharedPreferences.getString("Competicoes", ""));
     }
 
     private void remove(ArrayList paramArrayList, int paramInt, String paramString)

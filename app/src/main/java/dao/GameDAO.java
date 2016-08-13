@@ -3,11 +3,7 @@ package dao;
 import android.content.Context;
 import android.database.Cursor;
 import db.Adapter;
-import entidades.Country;
 import entidades.Game;
-import entidades.Item;
-import entidades.Team;
-import entidades.Competition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +11,21 @@ import java.util.concurrent.TimeUnit;
 
 public class GameDAO {
     private Adapter adapter;
+
+    private static final String TABLE_NAME = "Game";
+    private static final String KEY_ID = "id";
+    private static final String KEY_T_HOME = "t_home";
+    private static final String KEY_T_AWAY = "t_away";
+    private static final String KEY_COMPETITION = "competition";
+    private static final String KEY_DATE = "date";
+    private static final String KEY_TITLE = "title";
+
+    private static final int UPDATE_ID = 0;
+
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
+    private static final String DAY_FORMAT = "yyyy-MM-dd";
+
+    private static final String DEFAULT_DATE = "2016-01-01";
 
     public GameDAO(Context context) {
         adapter = new Adapter(context);
@@ -24,222 +35,135 @@ public class GameDAO {
         adapter.executeQuery(query);
     }
 
-    public ArrayList<Item> getCompetitionById(String idCompetitions) {
-        String query = "SELECT id, name FROM Competition WHERE id IN ("+idCompetitions+") ORDER BY name";
+    public String getNextUpdate() {
+        String query = "SELECT "+KEY_DATE+" FROM "+TABLE_NAME+" WHERE "+KEY_ID+" == "+UPDATE_ID;
 
-        return getArrayCompetitionFromQuery(query);
-    }
+        String str = getDateFromQuery(query);
 
-    private ArrayList<Item> getArrayCompetitionFromQuery(String query){
-        ArrayList list = new ArrayList();
-
-        Cursor cursor = adapter.executeQuery(query);
-
-        while (!cursor.isAfterLast()) {
-            list.add(new Competition(cursor.getInt(cursor.getColumnIndex("id")),
-                    cursor.getString(cursor.getColumnIndex("name"))));
-            cursor.moveToNext();
+        if(str.equalsIgnoreCase("")){
+            return DEFAULT_DATE;
+        }else{
+            return str;
         }
-
-        return list;
     }
-
-    public ArrayList<Item> getCompetitionsCountry(int idCountry) {
-        String query = "SELECT id, name FROM Competition WHERE country = "+idCountry
-                +" ORDER BY name";
-
-        return getArrayCompetitionFromQuery(query);
-    }
-
-    public ArrayList<Country> getCountries() {
-        ArrayList list = new ArrayList();
-
-        Cursor cursor = adapter.executeQuery("SELECT id, name FROM Country ORDER BY name");
-
-        while (!cursor.isAfterLast()) {
-            list.add(new Country(cursor.getInt(cursor.getColumnIndex("id")),
-                    cursor.getString(cursor.getColumnIndex("id"))));
-            cursor.moveToNext();
-        }
-
-        return list;
-    }
-
-    /*public ArrayList<Game> getGames(String paramString1, String paramString2, String paramString3)
-    {
-        Object localObject = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        String str = (String)localObject + " 00:00";
-        localObject = new ArrayList();
-        paramString1 = "SELECT titulo, date FROM Game WHERE date > '" + str + "' AND (" + "(t_home IN (" + paramString1 + ") OR t_away IN (" + paramString1 + ")) OR (t_away IN (" + paramString2 + ") AND t_home IN (" + paramString2 + ")) OR " + "competition IN (" + paramString3 + ")) ORDER BY date";
-        paramString1 = this.adapter.executeQuery(paramString1);
-        while (!paramString1.isAfterLast())
-        {
-            ((ArrayList)localObject).add(new Game(paramString1.getString(paramString1.getColumnIndex("titulo")), paramString1.getString(paramString1.getColumnIndex("date"))));
-            paramString1.moveToNext();
-        }
-        return (ArrayList<Game>)localObject;
-    }*/
 
     public ArrayList<Game> getGamesNow(String idPrimaryTeams,
                                          String idSecondaryTeams, String idCompetitions) {
         Date date = new Date();
-        SimpleDateFormat full = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat full = new SimpleDateFormat(DATE_FORMAT);
         String end = full.format(date);
 
         date.setTime(date.getTime() - TimeUnit.HOURS.toMillis(2));
         String begin = full.format(date);
 
-        String query = "SELECT title, date FROM Game WHERE date >= '"+begin+"' AND date < '"+end
-                +"' AND (" + "(t_home IN (" +idPrimaryTeams+ ") OR t_away IN ("+idPrimaryTeams
-                +")) OR (t_away IN ("+idSecondaryTeams+") AND t_home IN ("+idSecondaryTeams+")) OR "
-                + "competition IN ("+idCompetitions+")) ORDER BY date";
+        String query = "SELECT "+KEY_TITLE+", "+KEY_DATE+" FROM "+TABLE_NAME+" WHERE "+KEY_DATE
+                +" >= '"+begin+"' AND "+KEY_DATE+" < '"+end+"' AND (("+KEY_T_HOME+" IN ("
+                +idPrimaryTeams+") OR "+KEY_T_AWAY+" IN ("+idPrimaryTeams+")) OR ("+KEY_T_HOME
+                +" IN ("+idSecondaryTeams+") AND "+KEY_T_AWAY+" IN ("+idSecondaryTeams+")) OR "
+                +KEY_COMPETITION+" IN ("+idCompetitions+")) ORDER BY "+KEY_DATE;
 
-        return getArrayGameFromQuery(query);
-    }
-
-    private ArrayList<Game> getArrayGameFromQuery(String query){
-        ArrayList list = new ArrayList();
-
-        Cursor cursor = adapter.executeQuery(query);
-
-        while (!cursor.isAfterLast()) {
-            list.add(new Game(cursor.getString(cursor.getColumnIndex("title")),cursor.getString(cursor.getColumnIndex("date"))));
-            cursor.moveToNext();
-        }
-
-        return list;
+        return getArrayFromQuery(query);
     }
 
     public ArrayList<Game> getGamesBefore(String idPrimaryTeams,
                                          String idSecondaryTeams, String idCompetitions) {
         Date date = new Date();
 
-        SimpleDateFormat day = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat full = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat day = new SimpleDateFormat(DAY_FORMAT);
+        SimpleDateFormat full = new SimpleDateFormat(DATE_FORMAT);
 
-        String begin = day.format(today);
+        String begin = day.format(date);
         begin+=" 00:00";
 
         date.setTime(date.getTime() - TimeUnit.HOURS.toMillis(2));
         String end = full.format(date);
 
-        String query = "SELECT title, date FROM Game WHERE date >= '"+begin+"' AND date < '"+end
-                +"' AND (" + "(t_home IN (" +idPrimaryTeams+ ") OR t_away IN ("+idPrimaryTeams
-                +")) OR (t_away IN ("+idSecondaryTeams+") AND t_home IN ("+idSecondaryTeams+")) OR "
-                + "competition IN ("+idCompetitions+")) ORDER BY date";
+        String query = "SELECT "+KEY_TITLE+", "+KEY_DATE+" FROM "+TABLE_NAME+" WHERE "+KEY_DATE
+                +" >= '"+begin+"' AND "+KEY_DATE+" < '"+end+"' AND (("+KEY_T_HOME+" IN ("
+                +idPrimaryTeams+") OR "+KEY_T_AWAY+" IN ("+idPrimaryTeams+")) OR ("+KEY_T_HOME
+                +" IN ("+idSecondaryTeams+") AND "+KEY_T_AWAY+" IN ("+idSecondaryTeams+")) OR "
+                +KEY_COMPETITION+" IN ("+idCompetitions+")) ORDER BY "+KEY_DATE;
 
-        return getArrayGameFromQuery(query);
+        return getArrayFromQuery(query);
     }
 
     public ArrayList<Game> getGamesAfter(String idPrimaryTeams,
                                           String idSecondaryTeams, String idCompetitions) {
         Date date = new Date();
-        SimpleDateFormat day = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat full = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat day = new SimpleDateFormat(DAY_FORMAT);
+        SimpleDateFormat full = new SimpleDateFormat(DATE_FORMAT);
 
         String begin = full.format(date);
         String end = day.format(date);
         end+=" 00:00";
 
-        String query = "SELECT title, date FROM Game WHERE date >= '"+begin+"' AND date < '"+end
-                +"' AND (" + "(t_home IN (" +idPrimaryTeams+ ") OR t_away IN ("+idPrimaryTeams
-                +")) OR (t_away IN ("+idSecondaryTeams+") AND t_home IN ("+idSecondaryTeams+")) OR "
-                + "competition IN ("+idCompetitions+")) ORDER BY date";
+        String query = "SELECT "+KEY_TITLE+", "+KEY_DATE+" FROM "+TABLE_NAME+" WHERE "+KEY_DATE
+                +" >= '"+begin+"' AND "+KEY_DATE+" < '"+end+"' AND (" + "("+KEY_T_HOME+" IN ("
+                +idPrimaryTeams+ ") OR "+KEY_T_AWAY+" IN ("+idPrimaryTeams+")) OR ("+KEY_T_HOME
+                +" IN ("+idSecondaryTeams+") AND "+KEY_T_AWAY+" IN ("+idSecondaryTeams+")) OR "
+                +KEY_COMPETITION+" IN ("+idCompetitions+")) ORDER BY "+KEY_DATE;
 
-        return getArrayGameFromQuery(query);
+        return getArrayFromQuery(query);
     }
 
-    public String getNextNotificationGames(String paramString1, String paramString2, String paramString3, Date paramDate) {
-        Object localObject = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        new Date();
-        localObject = ((SimpleDateFormat)localObject).format(paramDate);
-        paramDate = "";
-        paramString1 = "SELECT date FROM Game WHERE date > '" + (String)localObject + "' AND (" + "(t_home IN (" + paramString1 + ") OR t_away IN (" + paramString1 + ")) OR (t_away IN (" + paramString2 + ") AND t_home IN (" + paramString2 + ")) OR " + "competition IN (" + paramString3 + ")) ORDER BY date LIMIT 1";
-        paramString2 = this.adapter.executeQuery(paramString1);
-        paramString1 = paramDate;
-        if (paramString2 != null)
-        {
-            paramString1 = paramDate;
-            if (paramString2.moveToFirst()) {
-                paramString1 = paramString2.getString(paramString2.getColumnIndex("date"));
+    public String getNextNotificationGames(String idPrimaryTeams, String idSecondaryTeams,
+                                           String idCompetitions, Date date) {
+        SimpleDateFormat full = new SimpleDateFormat(DATE_FORMAT);
+        String begin = full.format(date);
+
+        String query = "SELECT "+KEY_DATE+" FROM "+TABLE_NAME+" WHERE "+KEY_DATE+" > '"+begin
+                +"' AND (("+KEY_T_HOME+" IN ("+idPrimaryTeams+") OR "+KEY_T_AWAY+" IN ("
+                +idPrimaryTeams+")) OR ("+KEY_T_HOME+" IN ("+idSecondaryTeams+") AND "+KEY_T_AWAY
+                +" IN ("+idSecondaryTeams+")) OR "+KEY_COMPETITION+" IN ("+idCompetitions
+                +")) ORDER BY "+KEY_DATE+" LIMIT 1";
+
+        return getDateFromQuery(query);
+    }
+
+    public ArrayList<Game> getNotificationGames(String idPrimaryTeams, String idSecondaryTeams,
+                                                String idCompetitions, ArrayList<String> dates) {
+        String query = "SELECT "+KEY_TITLE+", "+KEY_DATE+" FROM "+TABLE_NAME+" WHERE "
+                +KEY_DATE+" IN (";
+
+        for(int i=0; i<dates.size(); i++){
+            if(i > 0){
+                query += ", ";
+            }
+            query += "'"+dates.get(i)+"'";
+        }
+
+        query += ") AND (("+KEY_T_HOME+" IN ("+idPrimaryTeams+") OR "+KEY_T_AWAY+" IN ("
+                +idPrimaryTeams+")) OR ("+KEY_T_HOME+" IN ("+idSecondaryTeams+") AND "+KEY_T_AWAY
+                +" IN ("+idSecondaryTeams+")) OR "+KEY_COMPETITION+" IN ("+idCompetitions
+                +")) ORDER BY "+KEY_DATE;
+
+        return getArrayFromQuery(query);
+    }
+
+    private String getDateFromQuery(String query){
+        Cursor cursor = adapter.executeQuery(query);
+
+        String str = "";
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                str = cursor.getString(cursor.getColumnIndex(KEY_DATE));
             }
         }
-        return paramString1;
-    }
 
-    public String getNextUpdate()
-    {
-        Cursor localCursor = this.adapter.executeQuery("SELECT date FROM Game WHERE id == 0");
-        String str = "2016-01-01";
-        if (localCursor != null) {
-            str = localCursor.getString(localCursor.getColumnIndex("date"));
-        }
         return str;
     }
 
-    public ArrayList<Game> getNotificationGames(String paramString1, String paramString2, String paramString3, ArrayList<String> paramArrayList)
-    {
-        new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
-        ArrayList localArrayList = new ArrayList();
-        Object localObject = "SELECT titulo, date FROM Game WHERE date IN (";
-        int i = 0;
-        while (i < paramArrayList.size())
-        {
-            String str = (String)localObject + "'" + (String)paramArrayList.get(i) + "'";
-            localObject = str;
-            if (i != paramArrayList.size() - 1) {
-                localObject = str + ", ";
-            }
-            i += 1;
-        }
-        paramString1 = (String)localObject + ") AND ((t_home IN (" + paramString1 + ") OR t_away IN (" + paramString1 + ")) OR (t_away IN (" + paramString2 + ") AND " + "t_home IN (" + paramString2 + ")) OR competition IN (" + paramString3 + ")) ORDER BY date";
-        paramString1 = this.adapter.executeQuery(paramString1);
-        while (!paramString1.isAfterLast())
-        {
-            localArrayList.add(new Game(paramString1.getString(paramString1.getColumnIndex("titulo")), paramString1.getString(paramString1.getColumnIndex("date"))));
-            paramString1.moveToNext();
-        }
-        return localArrayList;
-    }
-
-    public ArrayList<String> getNotificationsLimit(String paramString1, String paramString2, String paramString3, Date paramDate)
-    {
-        Object localObject = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String str = ((SimpleDateFormat)localObject).format(new Date());
-        localObject = ((SimpleDateFormat)localObject).format(paramDate);
-        paramDate = new ArrayList();
-        paramString1 = "SELECT DISTINCT date FROM Game WHERE date > '" + str + "' AND date < '" + (String)localObject + "' AND (" + "(t_home IN (" + paramString1 + ") OR t_away IN (" + paramString1 + ")) OR (t_away IN (" + paramString2 + ") AND t_home IN (" + paramString2 + ")) OR " + "competition IN (" + paramString3 + ")) ORDER BY date";
-        paramString1 = this.adapter.executeQuery(paramString1);
-        while (!paramString1.isAfterLast())
-        {
-            paramDate.add(paramString1.getString(paramString1.getColumnIndex("date")));
-            paramString1.moveToNext();
-        }
-        return paramDate;
-    }
-
-    public ArrayList<Team> getTeamsById(String paramString)
-    {
-        ArrayList localArrayList = new ArrayList();
-        paramString = "SELECT name, id FROM Team WHERE id IN (" + paramString + ") ORDER BY name";
-        paramString = this.adapter.executeQuery(paramString);
-        while (!paramString.isAfterLast())
-        {
-            localArrayList.add(new Team(paramString.getString(paramString.getColumnIndex("name")), paramString.getInt(paramString.getColumnIndex("id"))));
-            paramString.moveToNext();
-        }
-        return localArrayList;
-    }
-
-    public ArrayList<Item> getTeamsCountry(int idCountry) {
-        ArrayList<Item> list = new ArrayList();
-
-        String query = "SELECT id, name FROM Team WHERE country = "+idCountry+" ORDER BY name";
+    private ArrayList<Game> getArrayFromQuery(String query){
+        ArrayList<Game> list = new ArrayList<>();
 
         Cursor cursor = adapter.executeQuery(query);
 
-        while (!cursor.isAfterLast()){
-            list.add(new Team(cursor.getInt(cursor.getColumnIndex("id")),cursor.getString(cursor.getColumnIndex("name"))));
+        while (!cursor.isAfterLast()) {
+            Game game = new Game();
+            game.setTitle(cursor.getString(cursor.getColumnIndex(KEY_TITLE)));
+            game.setDate(cursor.getString(cursor.getColumnIndex(KEY_DATE)));
+
+            list.add(game);
             cursor.moveToNext();
         }
 

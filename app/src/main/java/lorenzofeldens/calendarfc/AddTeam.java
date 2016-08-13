@@ -14,7 +14,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import dao.CompetitionDAO;
+import dao.CountryDAO;
 import dao.GameDAO;
+import dao.TeamDAO;
 import entidades.Country;
 import entidades.Item;
 
@@ -83,20 +86,20 @@ public class AddTeam extends Activity {
     }
 
     private void fillExpandableList() {
-        countries = new GameDAO(this).getCountries();
+        countries = new CountryDAO(this).getAll();
 
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
 
         for(int i = 0; i< countries.size(); i++){
             if(listType == 2){
-                currentCountry = new GameDAO(this).getCompetitionsCountry(countries.get(i).getId());
+                currentCountry = new CompetitionDAO(this).getFromCountry(i);
             }else{
-                currentCountry = new GameDAO(this).getTeamsCountry(countries.get(i).getId());
+                currentCountry = new TeamDAO(this).getTeamsCountry(countries.get(i).getId());
             }
 
             removeSelected();
-            setGroup(countries.get(i).getNome());
+            setGroup(countries.get(i).getName());
         }
 
         ExpandableListAdapter listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild, 0);

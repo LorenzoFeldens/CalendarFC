@@ -79,9 +79,9 @@ public class MyNotifications
         this.timesPrincipais = localSharedPreferences.getString("Times Principais", "");
         this.timesSecundarios = localSharedPreferences.getString("Times Secundarios", "");
         this.competicoes = localSharedPreferences.getString("Competicoes", "");
-        this.antes = new GameDAO(this).getGamesAntes(this.timesPrincipais, this.timesSecundarios, this.competicoes);
-        this.agora = new GameDAO(this).getGamesAgora(this.timesPrincipais, this.timesSecundarios, this.competicoes);
-        this.depois = new GameDAO(this).getGamesDepois(this.timesPrincipais, this.timesSecundarios, this.competicoes);
+        this.antes = new GameDAO(this).getGamesBefore(this.timesPrincipais, this.timesSecundarios, this.competicoes);
+        this.agora = new GameDAO(this).getGamesNow(this.timesPrincipais, this.timesSecundarios, this.competicoes);
+        this.depois = new GameDAO(this).getGamesAfter(this.timesPrincipais, this.timesSecundarios, this.competicoes);
     }
 
     private void setLayout()
