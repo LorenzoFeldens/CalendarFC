@@ -47,7 +47,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         }
     }
 
-    public void createDataBase() throws IOException{    //If database not exists copy it from the assets
+    public void createDataBase() throws IOException{
         boolean mDataBaseExist = checkDataBase();
         if(!mDataBaseExist){
             this.getReadableDatabase();
@@ -78,7 +78,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         }
     }
 
-    private boolean checkDataBase(){     //Check that the database exists here: /data/data/your package/databases/Da Name
+    private boolean checkDataBase(){     ///data/data/your package/databases/Da Name
         File dbFile = new File(DB_PATH + DB_NAME);
         return dbFile.exists();
     }

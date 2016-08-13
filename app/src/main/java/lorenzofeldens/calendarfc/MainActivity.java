@@ -20,8 +20,10 @@ import java.util.Date;
 import dao.GameDAO;
 
 public class MainActivity extends Activity {
-    protected void onCreate(Bundle paramBundle) {
-        super.onCreate(paramBundle);
+    private static final SimpleDateFormat DAY_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         setLayout();
@@ -54,7 +56,8 @@ public class MainActivity extends Activity {
         SharedPreferences sharedPref = getSharedPreferences(
                 getString(R.string.shared_pref_file_key), Context.MODE_PRIVATE);
 
-        boolean firstUse = sharedPref.getBoolean(getString(R.string.shared_pref_first_use_main),true);
+        boolean firstUse = sharedPref.getBoolean(getString
+                (R.string.shared_pref_first_use_main),true);
 
         if(firstUse){
             showTutorial();
@@ -76,13 +79,11 @@ public class MainActivity extends Activity {
     }
 
     private void verifyUpdate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
         Date nextUpdate = null;
         Date now = new Date();
 
         try {
-            nextUpdate = dateFormat.parse(new GameDAO(this).getNextUpdate());
+            nextUpdate = DAY_FORMAT.parse(new GameDAO(this).getNextUpdate());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -99,7 +100,7 @@ public class MainActivity extends Activity {
     }
 
     public void nextGames(View view) {
-        startActivity(new Intent(this, MyNotifications.class));
+        startActivity(new Intent(this, MyGames.class));
     }
 
     public void options(View view) {

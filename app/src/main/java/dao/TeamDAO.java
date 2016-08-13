@@ -21,15 +21,16 @@ public class TeamDAO {
         adapter = new Adapter(context);
     }
 
-    public ArrayList<Item> getTeamsById(String idTeams) {
+    public ArrayList<Item> getById(String idTeams) {
         String query = "SELECT "+KEY_ID+", "+KEY_NAME+" FROM "+TABLE_NAME+" WHERE "+KEY_ID+" IN ("
                 +idTeams+") ORDER BY "+KEY_NAME;
 
         return getArrayFromQuery(query);
     }
 
-    public ArrayList<Item> getTeamsCountry(int idCountry) {
-        String query = "SELECT "+KEY_ID+", "+KEY_NAME+" FROM "+TABLE_NAME+" WHERE "+KEY_COUNTRY+" = "+idCountry+" ORDER BY "+KEY_NAME;
+    public ArrayList<Item> getFromCountry(int idCountry) {
+        String query = "SELECT "+KEY_ID+", "+KEY_NAME+" FROM "+TABLE_NAME+" WHERE "+KEY_COUNTRY
+                +" = "+idCountry+" ORDER BY "+KEY_NAME;
 
         return getArrayFromQuery(query);
     }

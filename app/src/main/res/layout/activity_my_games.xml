@@ -14,20 +14,21 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/textView_MyGames"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10.0dip"
             android:gravity="center_horizontal"
-            android:text="Jogos de Hoje"
+            android:text="@string/textView_my_games_text"
             android:textAppearance="?android:textAppearanceLarge"
             android:textColor="#ffffffff"
-            android:textSize="30.0dip" />
+            android:textSize="30.0dip"
+            android:textStyle="bold" />
 
         <ExpandableListView
-            android:id="@+id/expandableListView3"
+            android:id="@+id/expandableListView_MyGames"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="0dp"
             android:layout_weight="1.0" />
 
     </LinearLayout>

@@ -1,8 +1,8 @@
 package entidades;
 
 public class Game {
-    String date;
-    String title;
+    private String date;
+    private String title;
 
     public Game() {}
 

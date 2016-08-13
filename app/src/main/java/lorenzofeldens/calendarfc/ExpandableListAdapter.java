@@ -37,9 +37,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
+    public Object getChild(int groupPosition, int childPosition) {
         return listDataChild.get(listDataHeader.get(groupPosition))
-                .get(childPosititon);
+                .get(childPosition);
     }
 
     @Override
@@ -58,9 +58,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             if (type == 0) {
-                convertView = layoutInflater.inflate(R.layout.list_item_team, null);
+                convertView = layoutInflater.inflate(R.layout.list_item_team, parent);
             }else{
-                convertView = layoutInflater.inflate(R.layout.list_item_game, null);
+                convertView = layoutInflater.inflate(R.layout.list_item_game, parent);
             }
         }
 
@@ -130,14 +130,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.list_group, null);
+            convertView = layoutInflater.inflate(R.layout.list_group, parent);
         }
 
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.textView_list_group);
         lblListHeader.setText(headerTitle);
 
         if(type == 0 && condition == 1){
-            ImageButton plus = (ImageButton) convertView.findViewById(R.id.imageButton_plus_list_group);
+            ImageButton plus = (ImageButton) convertView.findViewById
+                    (R.id.imageButton_plus_list_group);
             plus.setVisibility(View.VISIBLE);
             plus.setClickable(true);
             plus.setFocusable(false);
@@ -163,7 +164,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         checkBox.setOnClickListener(null);
     }
 
-    private void setCheckBoxVisible(final CheckBox checkBox, final int group, final String textCheckBox) {
+    private void setCheckBoxVisible(final CheckBox checkBox, final int group,
+                                    final String textCheckBox) {
         checkBox.setVisibility(View.VISIBLE);
         checkBox.setEnabled(true);
         checkBox.setClickable(true);

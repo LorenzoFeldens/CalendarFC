@@ -26,9 +26,7 @@ import entidades.Item;
 import entidades.Team;
 import entidades.Competition;
 
-public class MyTeams
-        extends Activity
-{
+public class MyTeams extends Activity {
     ArrayList<Item> competicoes;
     int condicao;
     ExpandableListView expListView;

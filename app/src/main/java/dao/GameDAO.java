@@ -22,8 +22,8 @@ public class GameDAO {
 
     private static final int UPDATE_ID = 0;
 
-    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
-    private static final String DAY_FORMAT = "yyyy-MM-dd";
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static final SimpleDateFormat DAY_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     private static final String DEFAULT_DATE = "2016-01-01";
 
@@ -50,11 +50,10 @@ public class GameDAO {
     public ArrayList<Game> getGamesNow(String idPrimaryTeams,
                                          String idSecondaryTeams, String idCompetitions) {
         Date date = new Date();
-        SimpleDateFormat full = new SimpleDateFormat(DATE_FORMAT);
-        String end = full.format(date);
+        String end = DATE_FORMAT.format(date);
 
         date.setTime(date.getTime() - TimeUnit.HOURS.toMillis(2));
-        String begin = full.format(date);
+        String begin = DATE_FORMAT.format(date);
 
         String query = "SELECT "+KEY_TITLE+", "+KEY_DATE+" FROM "+TABLE_NAME+" WHERE "+KEY_DATE
                 +" >= '"+begin+"' AND "+KEY_DATE+" < '"+end+"' AND (("+KEY_T_HOME+" IN ("
@@ -69,14 +68,11 @@ public class GameDAO {
                                          String idSecondaryTeams, String idCompetitions) {
         Date date = new Date();
 
-        SimpleDateFormat day = new SimpleDateFormat(DAY_FORMAT);
-        SimpleDateFormat full = new SimpleDateFormat(DATE_FORMAT);
-
-        String begin = day.format(date);
+        String begin = DAY_FORMAT.format(date);
         begin+=" 00:00";
 
         date.setTime(date.getTime() - TimeUnit.HOURS.toMillis(2));
-        String end = full.format(date);
+        String end = DATE_FORMAT.format(date);
 
         String query = "SELECT "+KEY_TITLE+", "+KEY_DATE+" FROM "+TABLE_NAME+" WHERE "+KEY_DATE
                 +" >= '"+begin+"' AND "+KEY_DATE+" < '"+end+"' AND (("+KEY_T_HOME+" IN ("
@@ -90,11 +86,9 @@ public class GameDAO {
     public ArrayList<Game> getGamesAfter(String idPrimaryTeams,
                                           String idSecondaryTeams, String idCompetitions) {
         Date date = new Date();
-        SimpleDateFormat day = new SimpleDateFormat(DAY_FORMAT);
-        SimpleDateFormat full = new SimpleDateFormat(DATE_FORMAT);
 
-        String begin = full.format(date);
-        String end = day.format(date);
+        String begin = DATE_FORMAT.format(date);
+        String end = DAY_FORMAT.format(date);
         end+=" 00:00";
 
         String query = "SELECT "+KEY_TITLE+", "+KEY_DATE+" FROM "+TABLE_NAME+" WHERE "+KEY_DATE
@@ -108,8 +102,7 @@ public class GameDAO {
 
     public String getNextNotificationGames(String idPrimaryTeams, String idSecondaryTeams,
                                            String idCompetitions, Date date) {
-        SimpleDateFormat full = new SimpleDateFormat(DATE_FORMAT);
-        String begin = full.format(date);
+        String begin = DATE_FORMAT.format(date);
 
         String query = "SELECT "+KEY_DATE+" FROM "+TABLE_NAME+" WHERE "+KEY_DATE+" > '"+begin
                 +"' AND (("+KEY_T_HOME+" IN ("+idPrimaryTeams+") OR "+KEY_T_AWAY+" IN ("

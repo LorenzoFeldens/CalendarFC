@@ -165,9 +165,9 @@ public class Scheduling
         String[] arrayOfString = ((String)paramArrayList.get(0)).split("#");
         Object localObject1 = arrayOfString[1].split(" - ");
         arrayOfString = arrayOfString[0].split(" ");
-        Object localObject2 = new Intent(this.context, MyNotifications.class);
+        Object localObject2 = new Intent(this.context, MyGames.class);
         Object localObject3 = TaskStackBuilder.create(this.context);
-        ((TaskStackBuilder)localObject3).addParentStack(MyNotifications.class);
+        ((TaskStackBuilder)localObject3).addParentStack(MyGames.class);
         ((TaskStackBuilder)localObject3).addNextIntent((Intent)localObject2);
         localObject3 = ((TaskStackBuilder)localObject3).getPendingIntent(0, 134217728);
         localObject2 = new Notification.Builder(this.context);
@@ -192,9 +192,9 @@ public class Scheduling
 
     private Notification getNotificationMoreGames(ArrayList<String> paramArrayList)
     {
-        Object localObject1 = new Intent(this.context, MyNotifications.class);
+        Object localObject1 = new Intent(this.context, MyGames.class);
         Object localObject2 = TaskStackBuilder.create(this.context);
-        ((TaskStackBuilder)localObject2).addParentStack(MyNotifications.class);
+        ((TaskStackBuilder)localObject2).addParentStack(MyGames.class);
         ((TaskStackBuilder)localObject2).addNextIntent((Intent)localObject1);
         localObject2 = ((TaskStackBuilder)localObject2).getPendingIntent(0, 134217728);
         localObject1 = new NotificationCompat.Builder(this.context);

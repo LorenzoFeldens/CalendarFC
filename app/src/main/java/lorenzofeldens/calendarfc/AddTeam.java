@@ -16,7 +16,6 @@ import java.util.List;
 
 import dao.CompetitionDAO;
 import dao.CountryDAO;
-import dao.GameDAO;
 import dao.TeamDAO;
 import entidades.Country;
 import entidades.Item;
@@ -38,17 +37,20 @@ public class AddTeam extends Activity {
     private static final String LIST_SELECTED_KEY = "LIST_SELECTED";
     private static final String LIST_SELECTED_KEY2 = "LIST_SELECTED2";
 
+    private static final int EXPANDABLE_LIST_ADAPTER_TYPE = 0;
+    private static final int EXPANDABLE_LIST_ADAPTER_CONDITION = 2;
+
     private static final String EMPTY_GROUP_TEXT = "Nenhum item disponível";
 
-    protected void onCreate(Bundle paramBundle) {
-        super.onCreate(paramBundle);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_team);
 
-        paramBundle = getIntent().getExtras();
-        listType = paramBundle.getInt(LIST_TYPE_KEY);
+        Bundle bundle = getIntent().getExtras();
+        listType = bundle.getInt(LIST_TYPE_KEY);
 
-        Object list1 = paramBundle.getSerializable(LIST_SELECTED_KEY);
-        Object list2 = paramBundle.getSerializable(LIST_SELECTED_KEY2);
+        Object list1 = bundle.getSerializable(LIST_SELECTED_KEY);
+        Object list2 = bundle.getSerializable(LIST_SELECTED_KEY2);
 
         listSelected = verifySerializable(list1);
         listSelected2 = verifySerializable(list2);
@@ -93,17 +95,18 @@ public class AddTeam extends Activity {
 
         for(int i = 0; i< countries.size(); i++){
             if(listType == 2){
-                currentCountry = new CompetitionDAO(this).getFromCountry(i);
+                currentCountry = new CompetitionDAO(this).getFromCountry(countries.get(i).getId());
             }else{
-                currentCountry = new TeamDAO(this).getTeamsCountry(countries.get(i).getId());
+                currentCountry = new TeamDAO(this).getFromCountry(countries.get(i).getId());
             }
 
             removeSelected();
             setGroup(countries.get(i).getName());
         }
 
-        ExpandableListAdapter listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild, 0);
-        listAdapter.setCondition(2);
+        ExpandableListAdapter listAdapter = new ExpandableListAdapter(this, listDataHeader,
+                listDataChild, EXPANDABLE_LIST_ADAPTER_TYPE);
+        listAdapter.setCondition(EXPANDABLE_LIST_ADAPTER_CONDITION);
         expListView.setAdapter(listAdapter);
         expListView.setOnGroupExpandListener(new OnGroupExpandListener() {
             public void onGroupExpand(int group) {
@@ -152,14 +155,15 @@ public class AddTeam extends Activity {
         listDataChild.put(group, list);
     }
 
-    private void insert() {
-        ArrayList<ArrayList<String>> list = ((ExpandableListAdapter)this.expListView.getExpandableListAdapter()).getListChecked();
+    private void insertChecked() {
+        ArrayList<ArrayList<String>> list = ((ExpandableListAdapter)expListView
+                .getExpandableListAdapter()).getListChecked();
 
         for(int i=0; i<list.size(); i++){
             if(listType == 2)
-                currentCountry = new GameDAO(this).getCompetitionsCountry(countries.get(i).getId());
+                currentCountry = new CompetitionDAO(this).getFromCountry(countries.get(i).getId());
             else
-                currentCountry = new GameDAO(this).getTeamsCountry(countries.get(i).getId());
+                currentCountry = new TeamDAO(this).getFromCountry(countries.get(i).getId());
 
             for(int j=0; j<list.get(i).size(); j++){
                 for(int k = 0; k< currentCountry.size(); k++){
@@ -207,7 +211,7 @@ public class AddTeam extends Activity {
     }
 
     public void ok(View view) {
-        insert();
+        insertChecked();
         savePreferences();
         super.onBackPressed();
     }
