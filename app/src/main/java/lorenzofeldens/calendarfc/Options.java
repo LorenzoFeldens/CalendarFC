@@ -74,27 +74,38 @@ public class Options extends Activity {
         condition = 0;
     }
 
-    private void addNotification(int hour, int minute) {
-        int time = hour*60 + minute;
+    private void fillLayout() {
+        linearLayout.removeAllViews();
 
-        if(!notifications.contains(time)){
-            notifications.add(time);
-            notificationsSelected.add(false);
-        }
+        LayoutInflater layoutInflater = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        fillLayout();
-    }
+        for(int i=0; i<notifications.size(); i++){
+            View view = layoutInflater.inflate(R.layout.notifications_layout_item, linearLayout);
 
-    public void showTimePicker_Options(View view) {
-        TimePickerDialog tpd = new TimePickerDialog(this,
-                new TimePickerDialog.OnTimeSetListener() {
+            TextView textView = (TextView) view.findViewById(
+                    R.id.textView_notification_layout_item);
+            textView.setText(getNotificationText(notifications.get(i)));
+
+            if(condition == 1){
+                final int i2 = i;
+                CheckBox checkBox = (CheckBox) view.findViewById(
+                        R.id.checkBox_notification_layout_item);
+                checkBox.setVisibility(View.VISIBLE);
+                checkBox.setOnClickListener(new OnClickListener() {
                     @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay,
-                                          int minute) {
-                        addNotification(hourOfDay,minute);
+                    public void onClick(View view) {
+                        if(((CheckBox) view).isChecked()){
+                            notificationsSelected.set(i2,false);
+                        }else{
+                            notificationsSelected.set(i2,true);
+                        }
                     }
-                }, 0, 0, true);
-        tpd.show();
+                });
+            }
+
+            linearLayout.addView(view);
+        }
     }
 
     private String getNotificationText(int time) {
@@ -130,21 +141,12 @@ public class Options extends Activity {
         return str;
     }
 
-    public void editar_Options(View view){
-        String buttonText = (String) button.getText();
+    private void addNotification(int hour, int minute) {
+        int time = hour*60 + minute;
 
-        if(buttonText.equalsIgnoreCase(getString(R.string.button_Options_editar_text))){
-            condition = 1;
-
-            button.setText(getString(R.string.button_Options_ok_text));
-            findViewById(R.id.imageButton_Options).setVisibility(View.VISIBLE);
-        }else{
-            condition = 0;
-
-            doneEditing();
-
-            button.setText(getString(R.string.button_Options_editar_text));
-            findViewById(R.id.imageButton_Options).setVisibility(View.INVISIBLE);
+        if(!notifications.contains(time)){
+            notifications.add(time);
+            notificationsSelected.add(false);
         }
 
         fillLayout();
@@ -179,40 +181,6 @@ public class Options extends Activity {
         new Scheduling(this).setNotifications();
     }
 
-    private void fillLayout() {
-        linearLayout.removeAllViews();
-
-        LayoutInflater layoutInflater = (LayoutInflater) this
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        for(int i=0; i<notifications.size(); i++){
-            View view = layoutInflater.inflate(R.layout.notifications_layout_item, linearLayout);
-
-            TextView textView = (TextView) view.findViewById(
-                    R.id.textView_notification_layout_item);
-            textView.setText(getNotificationText(notifications.get(i)));
-
-            if(condition == 1){
-                final int i2 = i;
-                CheckBox checkBox = (CheckBox) view.findViewById(
-                        R.id.checkBox_notification_layout_item);
-                checkBox.setVisibility(View.VISIBLE);
-                checkBox.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(((CheckBox) view).isChecked()){
-                            notificationsSelected.set(i2,false);
-                        }else{
-                            notificationsSelected.set(i2,true);
-                        }
-                    }
-                });
-            }
-
-            linearLayout.addView(view);
-        }
-    }
-
     public void onCheckBoxClickOptions(View view){
         boolean status = true;
         if(!((CheckBox)view).isChecked()){
@@ -231,8 +199,46 @@ public class Options extends Activity {
         editor.apply();
     }
 
+    public void showTimePicker_Options(View view) {
+        TimePickerDialog tpd = new TimePickerDialog(this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                          int minute) {
+                        addNotification(hourOfDay,minute);
+                    }
+                }, 0, 0, true);
+        tpd.show();
+    }
+
+    public void editar_Options(View view){
+        String buttonText = (String) button.getText();
+
+        if(buttonText.equalsIgnoreCase(getString(R.string.button_Options_editar_text))){
+            condition = 1;
+
+            button.setText(getString(R.string.button_Options_ok_text));
+            findViewById(R.id.imageButton_Options).setVisibility(View.VISIBLE);
+        }else{
+            condition = 0;
+
+            doneEditing();
+
+            button.setText(getString(R.string.button_Options_editar_text));
+            findViewById(R.id.imageButton_Options).setVisibility(View.INVISIBLE);
+        }
+
+        fillLayout();
+    }
+
     public void update_Options(View view) {
         startActivity(new Intent(this, Update.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+        doneEditing();
+        super.onBackPressed();
     }
 }
 

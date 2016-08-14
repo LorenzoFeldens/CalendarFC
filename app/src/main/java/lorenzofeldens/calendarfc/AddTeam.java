@@ -217,6 +217,11 @@ public class AddTeam extends Activity {
     }
 
     public void ok_AddTeam(View view) {
+        onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
         insertChecked();
         savePreferences();
         super.onBackPressed();

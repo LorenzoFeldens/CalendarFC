@@ -254,5 +254,10 @@ public class MyTeams extends Activity {
         fillExpandableList();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        removeSelected();
+        savePreferences();
+        super.onBackPressed();
+    }
 }
