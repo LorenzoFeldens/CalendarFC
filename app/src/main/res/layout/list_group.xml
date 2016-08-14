@@ -33,7 +33,7 @@
                 android:background="@android:drawable/ic_input_add"
                 android:clickable="false"
                 android:focusable="false"
-                android:onClick="add"
+                android:onClick="add_MyTeams"
                 android:visibility="invisible"
                 android:contentDescription="@string/description_add_icon" />
 

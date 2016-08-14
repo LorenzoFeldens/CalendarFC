@@ -2,346 +2,236 @@ package lorenzofeldens.calendarfc;
 
 import android.app.Activity;
 import android.app.TimePickerDialog;
-import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.MotionEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 
 public class Options extends Activity {
-    Button button;
-    Button button2;
-    CheckBox checkBox;
-    int condicao;
-    boolean enableNot;
-    LinearLayout linearLayout;
-    ArrayList<Integer> notifications;
+    private int condition;
 
-    private void addNotification(int paramInt1, int paramInt2)
-    {
-        this.notifications.add(Integer.valueOf(paramInt1 * 60 + paramInt2));
-        HashSet localHashSet = new HashSet();
-        localHashSet.addAll(this.notifications);
-        this.notifications.clear();
-        this.notifications.addAll(localHashSet);
-        Collections.sort(this.notifications);
-        preenche();
+    private LinearLayout linearLayout;
+    private Button button;
+
+    private ArrayList<Integer> notifications;
+    private ArrayList<Boolean> notificationsSelected;
+
+    private boolean notificationsEnabled;
+
+    private static final String DEFAULT_NOTIFICATION_VALUE = "10";
+    private static final boolean DEFAULT_NOTIFICATION_ENABLED_VALUE = true;
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_options);
+
+        getData();
+        setLayout();
+        fillLayout();
     }
 
-    private void geraAlert()
-    {
-        new TimePickerDialog(this, 16973939, new OnTimeSetListener()
-        {
-            public void onTimeSet(TimePicker paramAnonymousTimePicker, int paramAnonymousInt1, int paramAnonymousInt2)
-            {
-                Options.this.addNotification(paramAnonymousInt1, paramAnonymousInt2);
-            }
-        }, 0, 0, true).show();
+    private void getData() {
+        notifications = new ArrayList<>();
+        notificationsSelected = new ArrayList<>();
+
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(
+                R.string.shared_pref_file_key), Context.MODE_PRIVATE);
+
+        String[] array = sharedPreferences.getString(getString(
+                R.string.shared_pref_notifications), DEFAULT_NOTIFICATION_VALUE).split("#");
+
+        for (String anArray : array) {
+            notifications.add(Integer.valueOf(anArray));
+            notificationsSelected.add(false);
+        }
+
+        notificationsEnabled = sharedPreferences.getBoolean(getString(
+                R.string.shared_pref_notifications_enabled), DEFAULT_NOTIFICATION_ENABLED_VALUE);
     }
 
-    private void getDados()
-    {
-        SharedPreferences localSharedPreferences = getSharedPreferences(getString(2131099705), 0);
-        String[] arrayOfString = localSharedPreferences.getString("Notificacoes", "10").split("#");
-        int i = 0;
-        while (i < arrayOfString.length)
-        {
-            this.notifications.add(Integer.valueOf(arrayOfString[i]));
-            i += 1;
+    private void setLayout() {
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(Color.BLACK);
         }
-        if (localSharedPreferences.getInt("Enabled", 1) == 1)
-        {
-            this.enableNot = true;
-            return;
-        }
-        this.enableNot = false;
+
+        ((CheckBox) findViewById(R.id.checkBox_Options)).setChecked(notificationsEnabled);
+
+        linearLayout = (LinearLayout) findViewById(R.id.linearLayout_Options);
+        button = (Button) findViewById(R.id.button_Options_editar);
+        condition = 0;
     }
 
-    private String getNotificationText(String paramString)
-    {
-        int k = Integer.valueOf(paramString).intValue();
-        int i = 0;
-        int j = k;
-        if (k == 0) {
-            return "No Hor��rio";
+    private void addNotification(int hour, int minute) {
+        int time = hour*60 + minute;
+
+        if(!notifications.contains(time)){
+            notifications.add(time);
+            notificationsSelected.add(false);
         }
-        while (j >= 60)
-        {
-            i += 1;
-            j -= 60;
-        }
-        paramString = "";
-        if (i > 0) {
-            paramString = "" + i + " Horas ";
-        }
-        if (j <= 0)
-        {
-            str = paramString;
-            if (i >= 0) {}
-        }
-        else
-        {
-            str = paramString;
-            if (i > 0) {
-                str = paramString + "e ";
-            }
-            if (j != 1) {
-                break label163;
-            }
-        }
-        label163:
-        for (String str = str + j + " Minuto ";; str = str + j + " Minutos ") {
-            return str + "Antes";
-        }
+
+        fillLayout();
     }
 
-    private void ok()
-    {
-        this.condicao = 0;
-        this.linearLayout.setOnClickListener(null);
+    public void showTimePicker_Options(View view) {
+        TimePickerDialog tpd = new TimePickerDialog(this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                          int minute) {
+                        addNotification(hourOfDay,minute);
+                    }
+                }, 0, 0, true);
+        tpd.show();
+    }
+
+    private String getNotificationText(int time) {
+        int hours = time/60;
+        int minutes = time-hours*60;
+
         String str = "";
-        int i = 0;
-        while (i < this.notifications.size())
-        {
-            localObject = str;
-            if (!str.equalsIgnoreCase("")) {
-                localObject = str + "#";
+
+        if(hours > 0){
+            if(hours == 1){
+                str += "1 Hora";
+            }else{
+                str += hours+" Horas";
             }
-            str = (String)localObject + this.notifications.get(i);
-            i += 1;
         }
-        Object localObject = getSharedPreferences(getString(2131099705), 0).edit();
-        ((Editor)localObject).putString("Notificacoes", str);
-        ((Editor)localObject).commit();
-        preenche();
+        if(minutes > 0){
+            if(!str.equalsIgnoreCase("")){
+                str += " e ";
+            }
+            if(minutes == 1){
+                str += "1 Minuto";
+            }else{
+                str += minutes+" Minutos";
+            }
+        }
+
+        if(str.equalsIgnoreCase("")){
+            str = "No Horário";
+        }else{
+            str += " Antes";
+        }
+
+        return str;
+    }
+
+    public void editar_Options(View view){
+        String buttonText = (String) button.getText();
+
+        if(buttonText.equalsIgnoreCase(getString(R.string.button_Options_editar_text))){
+            condition = 1;
+
+            button.setText(getString(R.string.button_Options_ok_text));
+            findViewById(R.id.imageButton_Options).setVisibility(View.VISIBLE);
+        }else{
+            condition = 0;
+
+            doneEditing();
+
+            button.setText(getString(R.string.button_Options_editar_text));
+            findViewById(R.id.imageButton_Options).setVisibility(View.INVISIBLE);
+        }
+
+        fillLayout();
+    }
+
+    private void doneEditing() {
+        for(int i=notificationsSelected.size()-1; i>=0; i--){
+            if(notificationsSelected.get(i)){
+                notifications.remove(i);
+                notificationsSelected.remove(i);
+            }
+        }
+
+        Collections.sort(notifications);
+
+        String str = "";
+        for(int i=0; i<notifications.size(); i++){
+            notificationsSelected.set(i,false);
+
+            str += notifications.get(i);
+            if(i != notifications.size()-1){
+                str += "#";
+            }
+        }
+
+        SharedPreferences.Editor editor = getSharedPreferences(getString(
+                R.string.shared_pref_file_key), Context.MODE_PRIVATE).edit();
+
+        editor.putString(getString(R.string.shared_pref_notifications),str);
+        editor.apply();
+
         new Scheduling(this).setNotifications();
     }
 
-    private void preenche()
-    {
-        this.linearLayout.removeAllViews();
-        Object localObject1 = new LinearLayout.LayoutParams(-1, -1);
-        ScrollView localScrollView = new ScrollView(this);
-        localScrollView.setLayoutParams((ViewGroup.LayoutParams)localObject1);
-        LinearLayout localLinearLayout = new LinearLayout(this);
-        localLinearLayout.setLayoutParams((ViewGroup.LayoutParams)localObject1);
-        localLinearLayout.setOrientation(1);
-        final int i = 0;
-        while (i < this.notifications.size())
-        {
-            localObject1 = new LinearLayout(this);
-            Object localObject2 = new LinearLayout.LayoutParams(-1, -2);
-            ((LinearLayout.LayoutParams)localObject2).setMargins(5, 5, 5, 5);
-            ((LinearLayout)localObject1).setLayoutParams((ViewGroup.LayoutParams)localObject2);
-            ((LinearLayout)localObject1).setOrientation(0);
-            localObject2 = new LinearLayout(this);
-            ((LinearLayout)localObject2).setLayoutParams(new LinearLayout.LayoutParams(-2, -2));
-            Object localObject3 = new TextView(this);
-            ((TextView)localObject3).setTextColor(-1);
-            ((TextView)localObject3).setTextSize(20.0F);
-            ((TextView)localObject3).setText(getNotificationText(String.valueOf(this.notifications.get(i))));
-            ((LinearLayout)localObject2).addView((View)localObject3);
-            ((LinearLayout)localObject1).addView((View)localObject2);
-            if (this.condicao == 2)
-            {
-                localObject2 = new LinearLayout(this);
-                localObject3 = new LinearLayout.LayoutParams(-1, -2);
-                ((LinearLayout.LayoutParams)localObject3).setMargins(10, 0, 10, 0);
-                ((LinearLayout)localObject2).setLayoutParams((ViewGroup.LayoutParams)localObject3);
-                ((LinearLayout)localObject2).setGravity(5);
-                localObject3 = new TextView(this);
-                ((TextView)localObject3).setTextColor(-65536);
-                ((TextView)localObject3).setTextSize(20.0F);
-                ((TextView)localObject3).setText("X");
-                ((LinearLayout)localObject2).addView((View)localObject3);
-                ((LinearLayout)localObject1).addView((View)localObject2);
-                ((LinearLayout)localObject1).setOnClickListener(new OnClickListener()
-                {
-                    public void onClick(View paramAnonymousView)
-                    {
-                        Options.this.notifications.remove(i);
-                        Options.this.preenche();
+    private void fillLayout() {
+        linearLayout.removeAllViews();
+
+        LayoutInflater layoutInflater = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        for(int i=0; i<notifications.size(); i++){
+            View view = layoutInflater.inflate(R.layout.notifications_layout_item, linearLayout);
+
+            TextView textView = (TextView) view.findViewById(
+                    R.id.textView_notification_layout_item);
+            textView.setText(getNotificationText(notifications.get(i)));
+
+            if(condition == 1){
+                final int i2 = i;
+                CheckBox checkBox = (CheckBox) view.findViewById(
+                        R.id.checkBox_notification_layout_item);
+                checkBox.setVisibility(View.VISIBLE);
+                checkBox.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(((CheckBox) view).isChecked()){
+                            notificationsSelected.set(i2,false);
+                        }else{
+                            notificationsSelected.set(i2,true);
+                        }
                     }
                 });
             }
-            localLinearLayout.addView((View)localObject1);
-            i += 1;
-        }
-        if (this.condicao == 1)
-        {
-            localScrollView.setOnTouchListener(new OnTouchListener()
-            {
-                public boolean onTouch(View paramAnonymousView, MotionEvent paramAnonymousMotionEvent)
-                {
-                    if (paramAnonymousMotionEvent.getActionMasked() == 0) {
-                        Options.this.geraAlert();
-                    }
-                    return false;
-                }
-            });
-            if (!this.enableNot) {
-                break label404;
-            }
-            this.checkBox.setChecked(true);
-            this.linearLayout.setEnabled(true);
-            this.button.setEnabled(true);
-            this.button2.setEnabled(true);
-        }
-        for (;;)
-        {
-            localScrollView.addView(localLinearLayout);
-            this.linearLayout.addView(localScrollView);
-            return;
-            localScrollView.setOnTouchListener(null);
-            break;
-            label404:
-            this.checkBox.setChecked(false);
-            this.linearLayout.setEnabled(false);
-            this.button.setEnabled(false);
-            this.button2.setEnabled(false);
+
+            linearLayout.addView(view);
         }
     }
 
-    private void remover()
-    {
-        this.condicao = 2;
-        preenche();
-        LinearLayout.LayoutParams localLayoutParams = new LinearLayout.LayoutParams(-1, -2);
-        localLayoutParams.setMargins(5, 5, 5, 5);
-        this.button.setLayoutParams(localLayoutParams);
-        this.button.setText("OK");
-        this.button.setOnClickListener(new OnClickListener()
-        {
-            public void onClick(View paramAnonymousView)
-            {
-                Options.this.condicao = 0;
-                paramAnonymousView = new LinearLayout.LayoutParams(-1, -2, 1.0F);
-                paramAnonymousView.setMargins(5, 5, 5, 5);
-                Options.this.button.setLayoutParams(paramAnonymousView);
-                Options.this.button.setText("REMOVER");
-                Options.this.button.setOnClickListener(new OnClickListener()
-                {
-                    public void onClick(View paramAnonymous2View)
-                    {
-                        Options.this.remover();
-                    }
-                });
-                Options.this.preenche();
-                Options.this.ok();
-            }
-        });
-    }
-
-    private void setEnabledFalse()
-    {
-        Editor localEditor = getSharedPreferences(getString(2131099705), 0).edit();
-        localEditor.putInt("Enabled", 0);
-        localEditor.commit();
-        new Scheduling(this).removeNotifications();
-        this.enableNot = false;
-    }
-
-    private void setEnabledTrue()
-    {
-        Editor localEditor = getSharedPreferences(getString(2131099705), 0).edit();
-        localEditor.putInt("Enabled", 1);
-        localEditor.commit();
-        this.enableNot = true;
-    }
-
-    private void setLayout()
-    {
-        this.linearLayout = ((LinearLayout)findViewById(2131492965));
-        this.button = ((Button)findViewById(2131492966));
-        this.button2 = ((Button)findViewById(2131492967));
-        this.checkBox = ((CheckBox)findViewById(2131492963));
-        this.checkBox.setOnClickListener(new OnClickListener()
-        {
-            public void onClick(View paramAnonymousView)
-            {
-                if (Options.this.checkBox.isChecked())
-                {
-                    Options.this.setEnabledTrue();
-                    Options.this.preenche();
-                    return;
-                }
-                Options.this.setEnabledFalse();
-                Options.this.preenche();
-            }
-        });
-        this.notifications = new ArrayList();
-        this.condicao = 0;
-    }
-
-    public void add(View paramView)
-    {
-        geraAlert();
-        this.condicao = 1;
-        this.linearLayout.setOnClickListener(new OnClickListener()
-        {
-            public void onClick(View paramAnonymousView)
-            {
-                Options.this.geraAlert();
-            }
-        });
-        paramView = new LinearLayout.LayoutParams(-1, -2);
-        paramView.setMargins(5, 5, 5, 5);
-        this.button.setLayoutParams(paramView);
-        this.button.setText("OK");
-        this.button.setOnClickListener(new OnClickListener()
-        {
-            public void onClick(View paramAnonymousView)
-            {
-                paramAnonymousView = new LinearLayout.LayoutParams(-1, -2, 1.0F);
-                paramAnonymousView.setMargins(5, 5, 5, 5);
-                Options.this.button.setLayoutParams(paramAnonymousView);
-                Options.this.button.setText("REMOVER");
-                Options.this.button.setOnClickListener(new OnClickListener()
-                {
-                    public void onClick(View paramAnonymous2View)
-                    {
-                        Options.this.remover();
-                    }
-                });
-                Options.this.ok();
-            }
-        });
-        preenche();
-    }
-
-    protected void onCreate(Bundle paramBundle)
-    {
-        super.onCreate(paramBundle);
-        setContentView(2130968605);
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(-16777216);
+    public void onCheckBoxClickOptions(View view){
+        boolean status = true;
+        if(!((CheckBox)view).isChecked()){
+            status = false;
+            linearLayout.setAlpha(.5f);
+            button.setAlpha(.5f);
+        }else{
+            linearLayout.setAlpha(0);
+            button.setAlpha(0);
         }
-        setLayout();
-        getDados();
-        preenche();
+
+        SharedPreferences.Editor editor = getSharedPreferences(getString(
+                R.string.shared_pref_file_key), Context.MODE_PRIVATE).edit();
+
+        editor.putBoolean(getString(R.string.shared_pref_notifications_enabled),status);
+        editor.apply();
     }
 
-    public void remove(View paramView)
-    {
-        remover();
-    }
-
-    public void update(View paramView)
-    {
+    public void update_Options(View view) {
         startActivity(new Intent(this, Update.class));
     }
 }

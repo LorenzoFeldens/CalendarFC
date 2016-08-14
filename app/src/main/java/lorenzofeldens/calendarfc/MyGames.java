@@ -43,8 +43,6 @@ public class MyGames extends Activity {
         setContentView(R.layout.activity_my_games);
 
         setLayout();
-        setAds();
-
         getData();
         fillExpandableList();
     }
@@ -53,6 +51,8 @@ public class MyGames extends Activity {
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(Color.BLACK);
         }
+
+        setAds();
     }
 
     private void setAds(){
@@ -90,16 +90,16 @@ public class MyGames extends Activity {
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
 
-        setList(gamesBefore, GAMES_BEFORE_GROUP_NAME);
-        setList(gamesNow, GAMES_NOW_GROUP_NAME);
-        setList(gamesAfter, GAMES_AFTER_GROUP_NAME);
+        setGroup(gamesBefore, GAMES_BEFORE_GROUP_NAME);
+        setGroup(gamesNow, GAMES_NOW_GROUP_NAME);
+        setGroup(gamesAfter, GAMES_AFTER_GROUP_NAME);
 
         ExpandableListAdapter expandableListAdapter = new ExpandableListAdapter(this,
                 listDataHeader, listDataChild, EXPANDABLE_LIST_ADAPTER_TYPE);
         expandableListView.setAdapter(expandableListAdapter);
     }
 
-    private void setList(ArrayList<Game> games, String group) {
+    private void setGroup(ArrayList<Game> games, String group) {
         if (games.size() == 0) {
             return;
         }

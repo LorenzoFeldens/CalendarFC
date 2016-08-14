@@ -118,6 +118,22 @@ public class AddTeam extends Activity {
         });
     }
 
+    private void setGroup(String group) {
+        listDataHeader.add(group);
+
+        ArrayList<String> list = new ArrayList<>();
+
+        for(int i = 0; i< currentCountry.size(); i++){
+            list.add(currentCountry.get(i).getName());
+        }
+
+        if (list.size() == 0) {
+            list.add(EMPTY_GROUP_TEXT);
+        }
+
+        listDataChild.put(group, list);
+    }
+
     private void removeSelected() {
         ArrayList<Item> list = listSelected;
 
@@ -135,22 +151,6 @@ public class AddTeam extends Activity {
                 return;
             }
         }
-    }
-
-    private void setGroup(String group) {
-        listDataHeader.add(group);
-
-        ArrayList<String> list = new ArrayList<>();
-
-        for(int i = 0; i< currentCountry.size(); i++){
-            list.add(currentCountry.get(i).getName());
-        }
-
-        if (list.size() == 0) {
-            list.add(EMPTY_GROUP_TEXT);
-        }
-
-        listDataChild.put(group, list);
     }
 
     private void insertChecked() {
@@ -216,10 +216,9 @@ public class AddTeam extends Activity {
         editor.apply();
     }
 
-    public void ok(View view) {
+    public void ok_AddTeam(View view) {
         insertChecked();
         savePreferences();
         super.onBackPressed();
     }
-
 }

@@ -112,7 +112,4 @@ public class DownloadFileFromURL extends AsyncTask<String, String, String> {
                 gameDAO.executeUpdate(aS0);
         }
     }
-
-
-
 }

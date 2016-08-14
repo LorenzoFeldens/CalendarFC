@@ -56,11 +56,18 @@ public class MyTeams extends Activity {
     private static final String BUTTON_TEXT_EDIT = "Editar";
     private static final String BUTTON_TEXT_OK = "OK";
 
-    protected void onCreate(Bundle paramBundle) {
-        super.onCreate(paramBundle);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_teams);
 
         setLayout();
+    }
+
+    protected void onStart() {
+        super.onStart();
+        condition = 0;
+        getData();
+        fillExpandableList();
     }
 
     private void setLayout(){
@@ -72,6 +79,18 @@ public class MyTeams extends Activity {
         for(int i=0; i<3; i++){
             listGroups.add(false);
         }
+    }
+
+    private void getData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(
+                R.string.shared_pref_file_key), Context.MODE_PRIVATE);
+
+        primaryTeams = new TeamDAO(this).getById(sharedPreferences.getString(getString(
+                R.string.shared_pref_primary_teams), DEFAULT_PRIMARY_TEAMS));
+        secondaryTeams = new TeamDAO(this).getById(sharedPreferences.getString(getString(
+                R.string.shared_pref_secondary_teams), DEFAULT_SECONDARY_TEAMS));
+        competitions = new CompetitionDAO(this).getById(sharedPreferences.getString(getString(
+                R.string.shared_pref_competitions), DEFAULT_COMPETITIONS));
     }
 
     private void fillExpandableList() {
@@ -110,25 +129,20 @@ public class MyTeams extends Activity {
         }
     }
 
-    private void getData() {
-        SharedPreferences sharedPreferences = getSharedPreferences(getString(
-                R.string.shared_pref_file_key), Context.MODE_PRIVATE);
+    private void setGroup(ArrayList<Item> listItems, String group) {
+        listDataHeader.add(group);
 
-        primaryTeams = new TeamDAO(this).getById(sharedPreferences.getString(getString(
-                R.string.shared_pref_primary_teams), DEFAULT_PRIMARY_TEAMS));
-        secondaryTeams = new TeamDAO(this).getById(sharedPreferences.getString(getString(
-                R.string.shared_pref_secondary_teams), DEFAULT_SECONDARY_TEAMS));
-        competitions = new CompetitionDAO(this).getById(sharedPreferences.getString(getString(
-                R.string.shared_pref_competitions), DEFAULT_COMPETITIONS));
-    }
+        ArrayList<String> list = new ArrayList<>();
 
-    private void removeFromArray (ArrayList<Item> list, String name) {
-        for(int i=0; i<list.size(); i++){
-            if(list.get(i).getName().equalsIgnoreCase(name)){
-                list.remove(i);
-                return;
-            }
+        for(int i=0; i<listItems.size(); i++){
+            list.add(listItems.get(i).getName());
         }
+
+        if (list.size() == 0) {
+            list.add(EMPTY_GROUP_TEXT);
+        }
+
+        listDataChild.put(group, list);
     }
 
     private void removeSelected() {
@@ -143,6 +157,15 @@ public class MyTeams extends Activity {
         }
         for(int i=0; i<list.get(2).size(); i++){
             removeFromArray(competitions,list.get(2).get(i));
+        }
+    }
+
+    private void removeFromArray (ArrayList<Item> list, String name) {
+        for(int i=0; i<list.size(); i++){
+            if(list.get(i).getName().equalsIgnoreCase(name)){
+                list.remove(i);
+                return;
+            }
         }
     }
 
@@ -181,23 +204,7 @@ public class MyTeams extends Activity {
         new Scheduling(this).setNotifications();
     }
 
-    private void setGroup(ArrayList<Item> listItems, String group) {
-        listDataHeader.add(group);
-
-        ArrayList<String> list = new ArrayList<>();
-
-        for(int i=0; i<listItems.size(); i++){
-            list.add(listItems.get(i).getName());
-        }
-
-        if (list.size() == 0) {
-            list.add(EMPTY_GROUP_TEXT);
-        }
-
-        listDataChild.put(group, list);
-    }
-
-    public void add(View view) {
+    public void add_MyTeams(View view) {
         String group = (String) ((TextView) ((RelativeLayout) view.getParent())
                 .findViewById(R.id.textView_list_group)).getText();
 
@@ -232,7 +239,7 @@ public class MyTeams extends Activity {
         startActivity(intent);
     }
 
-    public void editar(View view) {
+    public void editar_MyTeams(View view) {
         if(condition == 0){
             ((Button) view).setText(BUTTON_TEXT_OK);
             condition = 1;
@@ -248,11 +255,4 @@ public class MyTeams extends Activity {
     }
 
 
-
-    protected void onStart() {
-        super.onStart();
-        condition = 0;
-        getData();
-        fillExpandableList();
-    }
 }
