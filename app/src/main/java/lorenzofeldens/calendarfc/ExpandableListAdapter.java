@@ -13,14 +13,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ExpandableListAdapter extends BaseExpandableListAdapter {
-    private Context context;
-    private HashMap<String, List<String>> listDataChild;
-    private List<String> listDataHeader;
+class ExpandableListAdapter extends BaseExpandableListAdapter {
+    private final Context context;
+    private final HashMap<String, List<String>> listDataChild;
+    private final List<String> listDataHeader;
 
     private int condition;
-    private ArrayList<ArrayList<String>> listChecked;
-    private int type;
+    private final ArrayList<ArrayList<String>> listChecked;
+    private final int type;
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader, HashMap<String,
             List<String>> listDataChild, int type) {

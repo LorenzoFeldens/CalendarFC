@@ -8,7 +8,7 @@ public abstract class Item implements Serializable {
     private ArrayList<Game> games;
     private String name;
 
-    public Item() {}
+    Item() {}
 
     public int getId() {
         return id;
@@ -16,14 +16,6 @@ public abstract class Item implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public ArrayList<Game> getGames() {
-        return games;
-    }
-
-    public void setGames(ArrayList<Game> games) {
-        this.games = games;
     }
 
     public String getName() {

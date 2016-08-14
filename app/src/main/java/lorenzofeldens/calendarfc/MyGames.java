@@ -9,10 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.ExpandableListView;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,10 +48,10 @@ public class MyGames extends Activity {
             getWindow().setStatusBarColor(Color.BLACK);
         }
 
-        setAds();
+        //setAds();
     }
 
-    private void setAds(){
+    /*private void setAds(){
         final InterstitialAd interstitialAd = new InterstitialAd(this);
         interstitialAd.setAdUnitId(getString(R.string.ads_interstitial_my_games));
         interstitialAd.loadAd(new AdRequest.Builder().addTestDevice(
@@ -65,7 +61,7 @@ public class MyGames extends Activity {
                 interstitialAd.show();
             }
         });
-    }
+    }*/
 
     private void getData() {
         SharedPreferences sharedPreferences = getSharedPreferences(getString(

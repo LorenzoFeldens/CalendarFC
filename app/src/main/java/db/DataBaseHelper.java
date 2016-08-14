@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 
-public class DataBaseHelper extends SQLiteOpenHelper{
+class DataBaseHelper extends SQLiteOpenHelper{
 
     private static String DB_PATH = "";
     private static final String DB_NAME = "calendar.db";
@@ -47,7 +47,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         }
     }
 
-    public void createDataBase() throws IOException{
+    private void createDataBase() {
         boolean mDataBaseExist = checkDataBase();
         if(!mDataBaseExist){
             this.getReadableDatabase();
@@ -97,10 +97,9 @@ public class DataBaseHelper extends SQLiteOpenHelper{
         mInput.close();
     }
 
-    public boolean openDataBase() throws SQLException{      //Open the database, so we can query it
+    public void openDataBase() {      //Open the database, so we can query it
         String mPath = DB_PATH + DB_NAME;
         mDataBase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.CREATE_IF_NECESSARY);
-        return mDataBase != null;
     }
 
     @Override

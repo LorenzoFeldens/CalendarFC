@@ -16,27 +16,21 @@ import android.support.v4.app.NotificationCompat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
 import dao.GameDAO;
 import entidades.Game;
 
-public class Scheduling {
+class Scheduling {
     private String competitions;
     private String primaryTeams;
     private String secondaryTeams;
 
-    private Context context;
-    private NotificationManager notificationManager;
+    private final Context context;
+    private final NotificationManager notificationManager;
 
     private ArrayList<Integer> notifications;
     private ArrayList<Game> games;
@@ -82,8 +76,8 @@ public class Scheduling {
         String[] array = sharedPreferences.getString(context.getString(
                 R.string.shared_pref_notifications),"10").split("#");
 
-        for(int i=0; i<array.length; i++){
-            notifications.add(Integer.valueOf(array[i]));
+        for (String anArray : array) {
+            notifications.add(Integer.valueOf(anArray));
         }
 
         Collections.sort(notifications, Collections.reverseOrder());
@@ -179,9 +173,8 @@ public class Scheduling {
         ArrayList<String> list = new ArrayList<>();
 
         for(int i=0; i<notifications.size(); i++){
-            Date date = game;
-
-            date.setTime(date.getTime() - TimeUnit.MINUTES.toMillis(notifications.get(i)));
+            Date date = new Date();
+            date.setTime(game.getTime() - TimeUnit.MINUTES.toMillis(notifications.get(i)));
 
             if(date.after(new Date())){
                 list.add(DATE_FORMAT.format(date)+"#"+DATE_FORMAT.format(game));
@@ -213,7 +206,7 @@ public class Scheduling {
     public Notification getNotificationGames(ArrayList<Game> games) {
         this.games = games;
 
-        ArrayList<String> gamesShown = new ArrayList<>();
+        ArrayList<String> gamesShown = null;
 
         if (Build.VERSION.SDK_INT >= 23) {
             StatusBarNotification[] statusBarNotifications = notificationManager
@@ -222,6 +215,10 @@ public class Scheduling {
                 gamesShown = NotificationCompat.getExtras(statusBarNotifications[0]
                         .getNotification()).getStringArrayList(NOTIFICATION_EXTRAS);
             }
+        }
+
+        if(gamesShown == null){
+            gamesShown = new ArrayList<>();
         }
 
         for(int i=0; i<games.size(); i++){

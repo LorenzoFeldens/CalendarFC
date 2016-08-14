@@ -102,13 +102,14 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
-
+        <!--
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView_banner_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             ads:adSize="BANNER"
             ads:adUnitId="@string/ads_banner_main" />
+            -->
 
     </LinearLayout>
 </RelativeLayout>

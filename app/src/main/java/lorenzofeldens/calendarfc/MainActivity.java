@@ -9,10 +9,6 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.view.View;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,16 +31,16 @@ public class MainActivity extends Activity {
             getWindow().setStatusBarColor(Color.BLACK);
         }
 
-        setAds();
+        //setAds();
 
         verifyFirstUse();
         verifyUpdate();
     }
 
-    private void setAds() {
+    /*private void setAds() {
         MobileAds.initialize(getApplicationContext(), getString(R.string.ads_app_id));
         ((AdView)findViewById(R.id.adView_banner_main)).loadAd(new AdRequest.Builder().build());
-    }
+    }*/
 
     private void verifyFirstUse() {
         SharedPreferences sharedPref = getSharedPreferences(
@@ -91,7 +87,7 @@ public class MainActivity extends Activity {
         scheduling.setNotifications();
     }
 
-    public void update_Main() {
+    private void update_Main() {
         startActivity(new Intent(this, Update.class));
     }
 

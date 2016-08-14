@@ -10,7 +10,7 @@ import entidades.Competition;
 import entidades.Item;
 
 public class CompetitionDAO {
-    private Adapter adapter;
+    private final Adapter adapter;
 
     private static final String TABLE_NAME = "Competition";
     private static final String KEY_ID = "id";

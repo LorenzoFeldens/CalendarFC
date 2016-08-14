@@ -10,7 +10,7 @@ import entidades.Item;
 import entidades.Team;
 
 public class TeamDAO {
-    private Adapter adapter;
+    private final Adapter adapter;
 
     private static final String TABLE_NAME = "Team";
     private static final String KEY_ID = "id";

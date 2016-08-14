@@ -9,7 +9,7 @@ import db.Adapter;
 import entidades.Country;
 
 public class CountryDAO {
-    private Adapter adapter;
+    private final Adapter adapter;
 
     private static final String TABLE_NAME = "Country";
     private static final String KEY_ID = "id";

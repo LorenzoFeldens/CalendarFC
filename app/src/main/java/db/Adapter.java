@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class Adapter {
 
-    private Context context;
+    private final Context context;
     private DataBaseHelper dataBaseHelper;
 
     public Adapter(Context context){
@@ -16,7 +16,7 @@ public class Adapter {
 
     private SQLiteDatabase mDb;
 
-    public Adapter open() throws SQLException{
+    private void open() throws SQLException{
         try{
             dataBaseHelper = new DataBaseHelper(context);
             dataBaseHelper.openDataBase();
@@ -27,10 +27,9 @@ public class Adapter {
         } catch (java.sql.SQLException s){
             System.out.println("ERROR: "+s.getMessage());
         }
-        return this;
     }
 
-    public void close(){
+    private void close(){
         dataBaseHelper.close();
     }
 

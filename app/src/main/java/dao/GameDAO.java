@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class GameDAO {
-    private Adapter adapter;
+    private final Adapter adapter;
 
     private static final String TABLE_NAME = "Game";
     private static final String KEY_ID = "id";

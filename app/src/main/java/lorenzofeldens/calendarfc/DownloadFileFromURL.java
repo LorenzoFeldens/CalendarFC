@@ -14,21 +14,13 @@ import java.net.URLConnection;
 
 import dao.GameDAO;
 
-public class DownloadFileFromURL extends AsyncTask<String, String, String> {
+class DownloadFileFromURL extends AsyncTask<String, String, String> {
     private String result;
-    private Context context;
+    private final Context context;
     private static final String TOAST_TEXT = "Jogos Atualizados!";
 
     public DownloadFileFromURL(Context context) {
         this.context = context;
-    }
-
-    /**
-     * Before starting background thread Show Progress Bar Dialog
-     * */
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
     }
 
     /**
