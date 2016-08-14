@@ -252,11 +252,17 @@
     <string name="accept">Accept</string>
     <string name="ads_app_id">ca-app-pub-8580494290111528~4534806898</string>
     <string name="ads_banner_main">ca-app-pub-8580494290111528/7488273293</string>
+    <string name="ads_interstitial_my_games">ca-app-pub-8580494290111528/2080868098</string>
     <string name="app_name">Calendar FC</string>
     <string name="button_AddTeam_text">OK</string>
-    <string name="button_my_teams_text">Meus Times</string>
-    <string name="button_next_games_text">Próximos Jogos</string>
-    <string name="button_options_text">Opções</string>
+    <string name="button_Main_my_teams_text">Meus Times</string>
+    <string name="button_Main_next_games_text">Próximos Jogos</string>
+    <string name="button_Main_options_text">Opções</string>
+    <string name="button_MyTeams_text">Editar</string>
+    <string name="button_Options_editar_text">Editar</string>
+    <string name="button_Options_ok_text">OK</string>
+    <string name="button_Options_update_text">Update</string>
+    <string name="checkBox_Options_text">Habilitar Notificações</string>
     <string msgid="2523291102206661146" name="common_google_play_services_enable_button">Enable</string>
     <string msgid="227660514972886228" name="common_google_play_services_enable_text"><ns1:g id="app_name">%1$s</ns1:g> won\'t work unless you enable Google Play services.</string>
     <string msgid="5122002158466380389" name="common_google_play_services_enable_title">Enable Google Play services</string>
@@ -281,7 +287,7 @@
     <string name="create_calendar_title">Create calendar event</string>
     <string name="decline">Decline</string>
     <string name="default_web_client_id" translatable="false">161156512000-uvsatfvmvhu1cucvalhhum1qappd8l8l.apps.googleusercontent.com</string>
-    <string name="description_add_icon">Add Icon</string>
+    <string name="description_add_icon">Ícone Adicionar</string>
     <string name="descriptions_app_logo">App Logo</string>
     <string name="firebase_database_url" translatable="false">https://admob-app-id-4534806898.firebaseio.com</string>
     <string name="gcm_defaultSenderId" translatable="false">161156512000</string>
@@ -303,6 +309,8 @@
     <string name="status_bar_notification_info_overflow">999+</string>
     <string name="store_picture_message">"Allow Ad to store image in Picture gallery?"</string>
     <string name="store_picture_title">Save image</string>
+    <string name="textView_Option_text">Notificações</string>
+    <string name="textView_my_games_text">Jogos Hoje</string>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
     <style name="AlertDialog.AppCompat.Light" parent="Base.AlertDialog.AppCompat.Light"/>
     <style name="Animation.AppCompat.Dialog" parent="Base.Animation.AppCompat.Dialog"/>

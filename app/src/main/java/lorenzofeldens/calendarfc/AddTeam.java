@@ -33,9 +33,9 @@ public class AddTeam extends Activity {
     private ExpandableListView expListView;
     private static int prevGroup;
 
-    private static final String LIST_TYPE_KEY = "LIST_TYPE";
-    private static final String LIST_SELECTED_KEY = "LIST_SELECTED";
-    private static final String LIST_SELECTED_KEY2 = "LIST_SELECTED2";
+    public static final String LIST_TYPE_KEY = "LIST_TYPE";
+    public static final String LIST_SELECTED_KEY = "LIST_SELECTED";
+    public static final String LIST_SELECTED_KEY2 = "LIST_SELECTED2";
 
     private static final int EXPANDABLE_LIST_ADAPTER_TYPE = 0;
     private static final int EXPANDABLE_LIST_ADAPTER_CONDITION = 2;

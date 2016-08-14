@@ -103,13 +103,14 @@ public class DownloadFileFromURL extends AsyncTask<String, String, String> {
     }
 
     private void executeUpdate(){
-        String[] s0 = result.split("\n");
+        String[] array = result.split("\n");
 
         GameDAO gameDAO = new GameDAO(context);
 
-        for (String aS0 : s0) {
-            if (!aS0.equalsIgnoreCase(""))
-                gameDAO.executeUpdate(aS0);
+        for (String anArray : array) {
+            if (!anArray.equalsIgnoreCase("")) {
+                gameDAO.executeUpdate(anArray);
+            }
         }
     }
 }

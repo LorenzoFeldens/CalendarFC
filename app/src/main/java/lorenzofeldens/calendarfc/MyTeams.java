@@ -49,10 +49,6 @@ public class MyTeams extends Activity {
 
     private static final String EMPTY_GROUP_TEXT = "Nenhum item selecionado";
 
-    private static final String LIST_TYPE_KEY = "LIST_TYPE";
-    private static final String LIST_SELECTED_KEY = "LIST_SELECTED";
-    private static final String LIST_SELECTED_KEY2 = "LIST_SELECTED2";
-
     private static final String BUTTON_TEXT_EDIT = "Editar";
     private static final String BUTTON_TEXT_OK = "OK";
 
@@ -230,9 +226,9 @@ public class MyTeams extends Activity {
         }
 
         Bundle bundle = new Bundle();
-        bundle.putInt(LIST_TYPE_KEY,type);
-        bundle.putSerializable(LIST_SELECTED_KEY,list1);
-        bundle.putSerializable(LIST_SELECTED_KEY2,list2);
+        bundle.putInt(AddTeam.LIST_TYPE_KEY,type);
+        bundle.putSerializable(AddTeam.LIST_SELECTED_KEY,list1);
+        bundle.putSerializable(AddTeam.LIST_SELECTED_KEY2,list2);
 
         Intent intent = new Intent(this, AddTeam.class);
         intent.putExtras(bundle);

@@ -47,7 +47,7 @@ public class GameDAO {
         }
     }
 
-    public String getNextNotificationGames(String idPrimaryTeams, String idSecondaryTeams,
+    private String getNextNotificationGames(String idPrimaryTeams, String idSecondaryTeams,
                                            String idCompetitions, Date date) {
         String begin = DATE_FORMAT.format(date);
 
@@ -73,6 +73,22 @@ public class GameDAO {
         return str;
     }
 
+    public ArrayList<String> getPossibleGameTimes(String idPrimaryTeams, String idSecondaryTeams,
+                                            String idCompetitions, Date date){
+        String limit = getNextNotificationGames(idPrimaryTeams, idSecondaryTeams,
+                idCompetitions, date);
+
+        String now = DATE_FORMAT.format(new Date());
+
+        String query = "SELECT DISTINCT "+KEY_DATE+" FROM "+TABLE_NAME+" WHERE "+KEY_DATE+" <= '"
+                +limit+"' AND "+KEY_DATE+" > '"+now+"' AND (("+KEY_T_HOME+" IN ("+idPrimaryTeams
+                +") OR "+KEY_T_AWAY+" IN ("+idPrimaryTeams+")) OR ("+KEY_T_HOME+" IN ("
+                +idSecondaryTeams+") AND "+KEY_T_AWAY+" IN ("+idSecondaryTeams+")) OR "
+                +KEY_COMPETITION+" IN ("+idCompetitions+")) ORDER BY "+KEY_DATE;
+
+        return  getArrayDatesFromQuery(query);
+    }
+
     public ArrayList<Game> getGamesBefore(String idPrimaryTeams,
                                           String idSecondaryTeams, String idCompetitions) {
         Date date = new Date();
@@ -89,7 +105,7 @@ public class GameDAO {
                 +" IN ("+idSecondaryTeams+") AND "+KEY_T_AWAY+" IN ("+idSecondaryTeams+")) OR "
                 +KEY_COMPETITION+" IN ("+idCompetitions+")) ORDER BY "+KEY_DATE;
 
-        return getArrayFromQuery(query);
+        return getArrayGameFromQuery(query);
     }
 
     public ArrayList<Game> getGamesNow(String idPrimaryTeams,
@@ -106,7 +122,7 @@ public class GameDAO {
                 +" IN ("+idSecondaryTeams+") AND "+KEY_T_AWAY+" IN ("+idSecondaryTeams+")) OR "
                 +KEY_COMPETITION+" IN ("+idCompetitions+")) ORDER BY "+KEY_DATE;
 
-        return getArrayFromQuery(query);
+        return getArrayGameFromQuery(query);
     }
 
     public ArrayList<Game> getGamesAfter(String idPrimaryTeams,
@@ -123,10 +139,10 @@ public class GameDAO {
                 +" IN ("+idSecondaryTeams+") AND "+KEY_T_AWAY+" IN ("+idSecondaryTeams+")) OR "
                 +KEY_COMPETITION+" IN ("+idCompetitions+")) ORDER BY "+KEY_DATE;
 
-        return getArrayFromQuery(query);
+        return getArrayGameFromQuery(query);
     }
 
-    public ArrayList<Game> getNotificationGames(String idPrimaryTeams, String idSecondaryTeams,
+    public ArrayList<Game> getGamesNotification(String idPrimaryTeams, String idSecondaryTeams,
                                                 String idCompetitions, ArrayList<String> dates) {
         String query = "SELECT "+KEY_TITLE+", "+KEY_DATE+" FROM "+TABLE_NAME+" WHERE "
                 +KEY_DATE+" IN (";
@@ -143,10 +159,10 @@ public class GameDAO {
                 +" IN ("+idSecondaryTeams+")) OR "+KEY_COMPETITION+" IN ("+idCompetitions
                 +")) ORDER BY "+KEY_DATE;
 
-        return getArrayFromQuery(query);
+        return getArrayGameFromQuery(query);
     }
 
-    private ArrayList<Game> getArrayFromQuery(String query){
+    private ArrayList<Game> getArrayGameFromQuery(String query){
         ArrayList<Game> list = new ArrayList<>();
 
         Cursor cursor = adapter.executeQuery(query);
@@ -157,6 +173,19 @@ public class GameDAO {
             game.setDate(cursor.getString(cursor.getColumnIndex(KEY_DATE)));
 
             list.add(game);
+            cursor.moveToNext();
+        }
+
+        return list;
+    }
+
+    private ArrayList<String> getArrayDatesFromQuery(String query){
+        ArrayList<String> list = new ArrayList<>();
+
+        Cursor cursor = adapter.executeQuery(query);
+
+        while (!cursor.isAfterLast()) {
+            list.add(cursor.getString(cursor.getColumnIndex(KEY_DATE)));
             cursor.moveToNext();
         }
 
