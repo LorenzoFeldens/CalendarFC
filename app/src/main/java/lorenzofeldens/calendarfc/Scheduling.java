@@ -27,10 +27,8 @@ import java.util.concurrent.TimeUnit;
 import dao.GameDAO;
 import entidades.Game;
 
-public class Scheduling
-{
-    static final int ID_GAMES_NOTIFICATION = 1;
-    static final int ID_UPDATE_NOTIFICATION = 2;
+public class Scheduling {
+
     static final String NOTIFICATION_EXTRAS = "notification_content";
     String competicoes;
     Context context;
@@ -39,6 +37,9 @@ public class Scheduling
     NotificationManager notificationManager;
     String timesPrincipais;
     String timesSecundarios;
+
+    private static final int ID_GAMES_NOTIFICATION = 1;
+    private static final int ID_UPDATE_NOTIFICATION = 2;
 
     public Scheduling(Context paramContext)
     {
