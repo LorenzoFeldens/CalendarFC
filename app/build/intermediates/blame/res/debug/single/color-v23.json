@@ -12,12 +12,12 @@
         "source": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.1.1\\res\\color-v23\\abc_btn_colored_borderless_text_material.xml"
     },
     {
-        "merged": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_switch_thumb.xml",
-        "source": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.1.1\\res\\color-v23\\abc_tint_switch_thumb.xml"
-    },
-    {
         "merged": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_edittext.xml",
         "source": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.1.1\\res\\color-v23\\abc_tint_edittext.xml"
+    },
+    {
+        "merged": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_switch_thumb.xml",
+        "source": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.1.1\\res\\color-v23\\abc_tint_switch_thumb.xml"
     },
     {
         "merged": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\res\\merged\\debug\\color-v23\\abc_tint_seek_thumb.xml",

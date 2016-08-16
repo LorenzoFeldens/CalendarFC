@@ -9,6 +9,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,9 +59,9 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             if (type == 0) {
-                convertView = layoutInflater.inflate(R.layout.list_item_team, parent);
+                convertView = layoutInflater.inflate(R.layout.list_item_team, null);
             }else{
-                convertView = layoutInflater.inflate(R.layout.list_item_game, parent);
+                convertView = layoutInflater.inflate(R.layout.list_item_game, null);
             }
         }
 
@@ -71,15 +72,20 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
             CheckBox checkBox_MyTeams = (CheckBox) convertView.findViewById(R.id.checkBox_MyTeams);
             CheckBox checkBox_AddTeam = (CheckBox) convertView.findViewById(R.id.checkBox_AddTeam);
 
-            if(condition == 0){
+            if(condition == 0 || childText.equalsIgnoreCase(MyTeams.EMPTY_GROUP_TEXT) ||
+                    childText.equalsIgnoreCase(AddTeam.EMPTY_GROUP_TEXT)){
                 setCheckBoxInvisible(checkBox_MyTeams);
                 setCheckBoxInvisible(checkBox_AddTeam);
             }else{
+                boolean checked = listChecked.get(groupPosition).contains(childText);
+
                 if(condition == 1){
                     setCheckBoxVisible(checkBox_MyTeams,groupPosition,childText);
+                    checkBox_MyTeams.setChecked(!checked);
                     setCheckBoxInvisible(checkBox_AddTeam);
                 }else{
                     setCheckBoxInvisible(checkBox_MyTeams);
+                    checkBox_AddTeam.setChecked(checked);
                     setCheckBoxVisible(checkBox_AddTeam,groupPosition,childText);
                 }
             }
@@ -130,7 +136,7 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.list_group, parent);
+            convertView = layoutInflater.inflate(R.layout.list_group, null);
         }
 
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.textView_list_group);
@@ -170,7 +176,7 @@ class ExpandableListAdapter extends BaseExpandableListAdapter {
         checkBox.setEnabled(true);
         checkBox.setClickable(true);
         checkBox.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View paramAnonymousView) {
+            public void onClick(View view) {
                 if (checkBox.isChecked()) {
                     listChecked.get(group).add(textCheckBox);
                 }else{

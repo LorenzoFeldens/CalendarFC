@@ -81,7 +81,7 @@ public class Options extends Activity {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         for(int i=0; i<notifications.size(); i++){
-            View view = layoutInflater.inflate(R.layout.notifications_layout_item, linearLayout);
+            View view = layoutInflater.inflate(R.layout.notifications_layout_item, null);
 
             TextView textView = (TextView) view.findViewById(
                     R.id.textView_notification_layout_item);
@@ -89,13 +89,14 @@ public class Options extends Activity {
 
             if(condition == 1){
                 final int i2 = i;
-                CheckBox checkBox = (CheckBox) view.findViewById(
+                final CheckBox checkBox = (CheckBox) view.findViewById(
                         R.id.checkBox_notification_layout_item);
                 checkBox.setVisibility(View.VISIBLE);
+                checkBox.setEnabled(true);
                 checkBox.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(((CheckBox) view).isChecked()){
+                        if(checkBox.isChecked()){
                             notificationsSelected.set(i2,false);
                         }else{
                             notificationsSelected.set(i2,true);
@@ -187,9 +188,11 @@ public class Options extends Activity {
             status = false;
             linearLayout.setAlpha(.5f);
             button.setAlpha(.5f);
+            button.setEnabled(false);
         }else{
-            linearLayout.setAlpha(0);
-            button.setAlpha(0);
+            linearLayout.setAlpha(1);
+            button.setAlpha(1);
+            button.setEnabled(true);
         }
 
         SharedPreferences.Editor editor = getSharedPreferences(getString(
@@ -200,7 +203,7 @@ public class Options extends Activity {
     }
 
     public void showTimePicker_Options(View view) {
-        TimePickerDialog tpd = new TimePickerDialog(this,
+        TimePickerDialog tpd = new TimePickerDialog(this,android.R.style.Theme_Holo_Light_Dialog,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay,

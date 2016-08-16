@@ -48,12 +48,12 @@
         "source": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.1.1\\res\\layout\\abc_screen_toolbar.xml"
     },
     {
-        "merged": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_alert_dialog_material.xml",
-        "source": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.1.1\\res\\layout\\abc_alert_dialog_material.xml"
-    },
-    {
         "merged": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\res\\merged\\debug\\layout\\list_item_game.xml",
         "source": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\src\\main\\res\\layout\\list_item_game.xml"
+    },
+    {
+        "merged": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_alert_dialog_material.xml",
+        "source": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.1.1\\res\\layout\\abc_alert_dialog_material.xml"
     },
     {
         "merged": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_add_team.xml",
@@ -72,16 +72,16 @@
         "source": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.1.1\\res\\layout\\abc_expanded_menu_layout.xml"
     },
     {
-        "merged": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_select_dialog_material.xml",
-        "source": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.1.1\\res\\layout\\abc_select_dialog_material.xml"
+        "merged": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_bar_title_item.xml",
+        "source": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.1.1\\res\\layout\\abc_action_bar_title_item.xml"
     },
     {
         "merged": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_media.xml",
         "source": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.1.1\\res\\layout\\notification_template_media.xml"
     },
     {
-        "merged": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_bar_title_item.xml",
-        "source": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.1.1\\res\\layout\\abc_action_bar_title_item.xml"
+        "merged": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_select_dialog_material.xml",
+        "source": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\24.1.1\\res\\layout\\abc_select_dialog_material.xml"
     },
     {
         "merged": "C:\\Users\\Lorenzo Feldens\\Documents\\Android Studio Projects\\Calendar FC\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_alert_dialog_button_bar_material.xml",

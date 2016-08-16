@@ -30,7 +30,7 @@
             android:enabled="false"
             android:focusable="false"
             android:visibility="invisible"
-            android:backgroundTint="#ffffff" />
+            android:buttonTint="#ffffff" />
 
         <CheckBox
             android:id="@+id/checkBox_AddTeam"
@@ -41,7 +41,7 @@
             android:enabled="false"
             android:focusable="false"
             android:visibility="invisible"
-            android:backgroundTint="#ffffff" />
+            android:buttonTint="#ffffff" />
 
     </RelativeLayout>
 </LinearLayout>

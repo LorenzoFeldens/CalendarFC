@@ -113,6 +113,10 @@ class Scheduling {
         ArrayList<String> possibleGameTimes = new GameDAO(context).getPossibleGameTimes(
                 primaryTeams, secondaryTeams, competitions, date);
 
+        if(possibleGameTimes.size() == 0){
+            return;
+        }
+
         ArrayList<String> possibleNotificationTimes = new ArrayList<>();
 
         for (int i = 0; i < possibleGameTimes.size(); i++) {

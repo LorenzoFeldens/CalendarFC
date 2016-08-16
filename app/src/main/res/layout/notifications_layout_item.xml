@@ -5,14 +5,14 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/textView_notification_layout_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:paddingLeft="?android:expandableListPreferredItemPaddingLeft"
             android:textColor="#ffffffff"
             android:textSize="20.0dip"
             android:textStyle="bold" />
@@ -25,6 +25,8 @@
             android:clickable="false"
             android:enabled="false"
             android:focusable="false"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            android:buttonTint="#ffffff"
+            android:checked="true" />
     </RelativeLayout>
 </LinearLayout>

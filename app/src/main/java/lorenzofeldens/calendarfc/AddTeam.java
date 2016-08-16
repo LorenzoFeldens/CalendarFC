@@ -40,7 +40,7 @@ public class AddTeam extends Activity {
     private static final int EXPANDABLE_LIST_ADAPTER_TYPE = 0;
     private static final int EXPANDABLE_LIST_ADAPTER_CONDITION = 2;
 
-    private static final String EMPTY_GROUP_TEXT = "Nenhum item disponível";
+    public static final String EMPTY_GROUP_TEXT = "Nenhum item disponível";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

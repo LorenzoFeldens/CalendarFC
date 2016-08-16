@@ -11,13 +11,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.sql.SQLException;
 
 class DataBaseHelper extends SQLiteOpenHelper{
 
     private static String DB_PATH = "";
     private static final String DB_NAME = "calendar.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 9;
     private SQLiteDatabase mDataBase;
     private final Context mContext;
 
@@ -40,11 +39,7 @@ class DataBaseHelper extends SQLiteOpenHelper{
         else {
             DB_PATH = context.getFilesDir() + context.getPackageName() + "/databases/";
         }
-        try {
-            createDataBase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        createDataBase();
     }
 
     private void createDataBase() {

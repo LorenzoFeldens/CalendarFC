@@ -47,7 +47,7 @@ public class MyTeams extends Activity {
     private static final String DEFAULT_SECONDARY_TEAMS = "";
     private static final String DEFAULT_COMPETITIONS = "";
 
-    private static final String EMPTY_GROUP_TEXT = "Nenhum item selecionado";
+    public static final String EMPTY_GROUP_TEXT = "Nenhum item selecionado";
 
     private static final String BUTTON_TEXT_EDIT = "Editar";
     private static final String BUTTON_TEXT_OK = "OK";
@@ -61,7 +61,7 @@ public class MyTeams extends Activity {
 
     protected void onStart() {
         super.onStart();
-        condition = 0;
+
         getData();
         fillExpandableList();
     }
@@ -70,6 +70,8 @@ public class MyTeams extends Activity {
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(Color.BLACK);
         }
+
+        condition = 0;
 
         listGroups = new ArrayList<>();
         for(int i=0; i<3; i++){
@@ -171,7 +173,7 @@ public class MyTeams extends Activity {
             if(!strPrimaryTeams.equalsIgnoreCase("")){
                 strPrimaryTeams += ", ";
             }
-            strPrimaryTeams += primaryTeams.get(i).getName();
+            strPrimaryTeams += primaryTeams.get(i).getId();
         }
 
         String strSecondaryTeams = "";
@@ -179,7 +181,7 @@ public class MyTeams extends Activity {
             if(!strSecondaryTeams.equalsIgnoreCase("")){
                 strSecondaryTeams += ", ";
             }
-            strSecondaryTeams += secondaryTeams.get(i).getName();
+            strSecondaryTeams += secondaryTeams.get(i).getId();
         }
 
         String strCompetitions = "";
@@ -187,7 +189,7 @@ public class MyTeams extends Activity {
             if(!strCompetitions.equalsIgnoreCase("")){
                 strCompetitions += ", ";
             }
-            strCompetitions += competitions.get(i).getName();
+            strCompetitions += competitions.get(i).getId();
         }
 
         SharedPreferences.Editor editor = getSharedPreferences(getString(

@@ -24,8 +24,6 @@ public class Adapter {
         } catch (SQLException mSQLException){
             System.out.println(mSQLException.toString());
             throw mSQLException;
-        } catch (java.sql.SQLException s){
-            System.out.println("ERROR: "+s.getMessage());
         }
     }
 
